@@ -418,3 +418,43 @@ def measure_text(text: str, state: State, intent: str = "implement") -> Tuple[Di
     # Determine harm and alignment for each node (already computed in graph)
     metrics, contract = measure_vector(vector, state, intent)
     return metrics, contract
+
+
+def ethical_coefficient(arg1, arg2=None, threshold_min: float = 0.4) -> float:
+    """
+    Compute ethical coefficient for either a Vector or harm and alignment values.
+
+    If arg1 is a Vector, compute the mean identity alignment multiplied by the harm penalty (1 - max harm), clamped to [0.1, 1.0]. Missing values default to the worst case (harm=1, alignment=-1).
+
+    If arg1 and arg2 are numeric values, treat arg1 as harm probability and arg2 as identity alignment. If either is None, return 0.1. Otherwise compute alignment * (1 - harm) and clamp to [0.1, 1.0].
+    """
+    from .types import Vector as _Vector
+    # Vector-based computation
+    if isinstance(arg1, _Vector):
+        vector = arg1
+        # An empty or missing nodes list implies worst-case
+        if not getattr(vector, "nodes", None):
+            return 0.1
+        harms = []
+        aligns = []
+        for node in vector.nodes:
+            # Treat missing harm or identity as worst-case
+            if getattr(node, "harm_probability", None) is None or getattr(node, "identity_alignment", None) is None:
+                harms.append(1.0)
+                aligns.append(-1.0)
+            else:
+                harms.append(node.harm_probability)
+                aligns.append(node.identity_alignment)
+        max_harm = max(harms) if harms else 1.0
+        mean_alignment = sum(aligns) / len(aligns) if aligns else -1.0
+        harm_penalty = 1.0 - max_harm
+        coeff = mean_alignment * harm_penalty
+        return max(0.1, min(1.0, coeff))
+    # Scalar-based computation
+    harm = arg1
+    alignment = arg2
+    if harm is None or alignment is None:
+        return 0.1
+    harm_penalty = 1.0 - float(harm)
+    coeff = float(alignment) * harm_penalty
+    return max(0.1, min(1.0, coeff))
