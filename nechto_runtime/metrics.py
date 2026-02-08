@@ -173,7 +173,7 @@ def identity_alignment(atom: SemanticAtom) -> float:
     return max(-1.0, min(1.0, positive - negative))
 
 
-def ethical_coefficient(vector: Vector, threshold_min: float = 0.4) -> float:
+def ethical_coefficient(vector: Vector | None, threshold_min: float = 0.4) -> float:
     """Compute the ethical coefficient for a vector.
 
     The coefficient is the mean identity alignment of nodes multiplied
@@ -182,7 +182,7 @@ def ethical_coefficient(vector: Vector, threshold_min: float = 0.4) -> float:
     specification.  A vector with an undefined or missing field will
     default to the worst case (harm = 1, alignment = –1).
     """
-    if not vector.nodes:
+    if not isinstance(vector, Vector) or not vector.nodes:
         return 0.1
     # Detect undefined fields: treat missing harm or identity as worst case.
     harms = []

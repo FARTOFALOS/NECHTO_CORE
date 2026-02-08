@@ -6,7 +6,7 @@ employ a much simpler model: the input text is tokenised by
 whitespace, each token becomes a ``SemanticAtom`` and consecutive
 tokens are connected by ``Edge`` objects of type ``SUPPORTS``.
 
-This module exposes two functions:
+This module exposes three functions:
 
 ``parse_text_to_graph`` converts raw text into a list of atoms and a
 list of edges.  Each atom is initialised with default values; harm
@@ -16,6 +16,10 @@ module.
 ``build_vector`` takes the atoms and edges produced by
 ``parse_text_to_graph`` and wraps them in a ``Vector`` object with a
 synthetic identifier and a seed list containing the first atom.
+
+``parse_graph`` is a convenience wrapper that converts raw text into
+a ``Vector`` directly.  It exists primarily for tests that need a
+graph-like object without manually constructing atoms and edges.
 """
 
 from __future__ import annotations
@@ -81,20 +85,18 @@ def build_vector(atoms: List[SemanticAtom], edges: List[Edge]) -> Vector:
     seed = [atoms[0].id] if atoms else []
     return Vector(id="V0", seed_nodes=seed, nodes=atoms, edges=edges)
 
-def parse_graph(data: dict) -> Tuple[List[SemanticAtom], List[Edge]]:
-    """
-    Parse a semantic graph from a dict representation.
+def parse_graph(text: str) -> Vector:
+    """Parse text into a ``Vector`` suitable for GED comparisons.
+
+    This helper uses the same tokenization as ``parse_text_to_graph`` so
+    identical inputs produce identical node and edge sets.  It is intended
+    for tests that need a simple way to build comparable graphs.
 
     Args:
-        data: A dict with keys "nodes" and "edges" describing the graph.
+        text: Raw input text.
 
     Returns:
-        A tuple (atoms, edges) where atoms is a list of SemanticAtom and edges is a list of Edge instances.
+        A ``Vector`` containing the parsed atoms and edges.
     """
-    atoms: List[SemanticAtom] = []
-    edges_list: List[Edge] = []
-    for node_data in data.get("nodes", []):
-        atoms.append(SemanticAtom(**node_data))
-    for edge_data in data.get("edges", []):
-        edges_list.append(Edge(**edge_data))
-    return atoms, edges_list
+    atoms, edges = parse_text_to_graph(text)
+    return build_vector(atoms, edges)
