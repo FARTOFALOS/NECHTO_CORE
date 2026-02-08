@@ -56,6 +56,7 @@ def parse_text_to_graph(text: str) -> Tuple[List[SemanticAtom], List[Edge]]:
         atom.harm_probability = harm_probability(atom, [])
         atom.identity_alignment = identity_alignment(atom)
         atoms.append(atom)
+
         # Connect to previous token if present.
         if idx > 0:
             edges.append(Edge(from_node=f"n{idx-1}", to_node=atom_id, type="SUPPORTS", weight=1.0))
@@ -79,3 +80,21 @@ def build_vector(atoms: List[SemanticAtom], edges: List[Edge]) -> Vector:
     """
     seed = [atoms[0].id] if atoms else []
     return Vector(id="V0", seed_nodes=seed, nodes=atoms, edges=edges)
+
+def parse_graph(data: dict) -> Tuple[List[SemanticAtom], List[Edge]]:
+    """
+    Parse a semantic graph from a dict representation.
+
+    Args:
+        data: A dict with keys "nodes" and "edges" describing the graph.
+
+    Returns:
+        A tuple (atoms, edges) where atoms is a list of SemanticAtom and edges is a list of Edge instances.
+    """
+    atoms: List[SemanticAtom] = []
+    edges_list: List[Edge] = []
+    for node_data in data.get("nodes", []):
+        atoms.append(SemanticAtom(**node_data))
+    for edge_data in data.get("edges", []):
+        edges_list.append(Edge(**edge_data))
+    return atoms, edges_list
