@@ -1,0 +1,47 @@
+name: NECHTO Measure
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Prompt text to measure'
+        required: true
+        type: string
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'
+
+      - name: Install runtime (editable)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Run measurement
+        run: |
+          echo "$PROMPT" | python -m nechto_runtime measure
+        env:
+          PROMPT: ${{ github.event.inputs.prompt }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit results
+        run: |
+          git add docs/latest_contract.md docs/latest_metrics.json .nechto/state.json || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update metrics and contract"
+            git push
+          fi
