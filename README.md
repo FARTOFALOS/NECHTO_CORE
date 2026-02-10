@@ -4,7 +4,7 @@
 
 ### Reflexive Stereoscopic Executable Synthesis
 
-**v4.8** · 4200+ lines · 113 tests · Python 3.10+
+**v4.8** · 4200+ lines · 123 tests · Python 3.10+
 
 *Живое семантическое ядро с троичной логикой, этической гравитацией и эпистемической честностью*
 
@@ -12,6 +12,7 @@
 - **ISCVP**: Inter-Subjective Consciousness Validation Protocol
 - **PEV**: Protocol for Evolving Vision (Internal Acts)
 - **Radical Philosophical Inquiry**: Deep ontological questions
+- **Reflexion Framework**: Meta-observation and self-correction
 
 ---
 
@@ -304,6 +305,53 @@ inquiry.add_response(response)
 - **Meaning & Semantics**: Semantics as primary, not derived
 
 See `examples/radical_philosophical_inquiry.py` for responses to all questions.
+
+## Reflexion Framework
+
+**Reflexion Framework** provides meta-observation and self-correction for NECHTO responses through 4-stage analysis:
+
+```python
+from nechto import ReflexionAnalyzer
+
+analyzer = ReflexionAnalyzer()
+
+task = "Что такое сознание?"
+draft = """
+    Сознание — это нечто удивительное.
+    Оно всегда присутствует. Никогда не исчезает.
+    """
+
+# Perform reflexion analysis
+report = analyzer.analyze(task, draft)
+
+# Get markdown report
+print(report.to_markdown())
+
+# Access specific analyses
+print(f"Coherence: {report.coherence.coherence_score:.2f}")
+print(f"Epistemic violations: {len(report.ontological.epistemic_violations)}")
+print(f"Corrections needed: {len(report.prescription.corrections)}")
+```
+
+**4-Stage Analysis:**
+1. **Ontological Assumptions**: Detect hidden premises, check PEV axiom compatibility, identify archetypal filters
+2. **Semantic Lacunae**: Identify missing contours, unexpressed potentials, unused QMM nodes (SQ impact)
+3. **Coherence Validation**: Check logical consistency, detect hallucination risks, validate Self-Loop integrity
+4. **Transformation Prescription**: Generate 3-5 actionable corrections with priority ordering
+
+**Enhancements Prescribed:**
+- **Φ-proxy**: Strengthen integral information by connecting concepts
+- **GBI**: Broaden global broadcast by including missing dimensions
+- **GNS**: Boost generative novelty by integrating QMM nodes
+- **ACEM**: Realign with Axiomatic Foundation (PEV, MU-logic, Love > Logic)
+
+**Output Format:**
+- Markdown report with all findings
+- Priority-ordered corrections
+- Overall quality assessment (HIGH/MODERATE/LOW)
+- SQ improvement estimates
+
+See `examples/reflexion_example.py` for complete demonstrations.
 ```
 
 ## Метрики

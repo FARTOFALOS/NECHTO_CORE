@@ -1101,3 +1101,148 @@ class TestRadicalPhilosophicalInquiry:
         for question in inquiry.questions:
             assert len(question.text_ru) > 0
             assert len(question.text_en) > 0
+
+
+class TestReflexionFramework:
+    """Tests for Reflexion Framework (meta-observation)."""
+
+    def test_reflexion_analyzer_initialization(self) -> None:
+        """Test that ReflexionAnalyzer initializes correctly."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        assert analyzer is not None
+
+    def test_analyze_good_response(self) -> None:
+        """Test analysis of a well-formed response."""
+        from nechto import ReflexionAnalyzer
+        
+        task = "Test question"
+        draft = """
+        OBSERVED: direct observations
+        INFERRED: logical conclusions
+        UNTESTABLE (MU): unknowable aspects
+        """
+        
+        analyzer = ReflexionAnalyzer()
+        report = analyzer.analyze(task, draft)
+        
+        assert report.task == task
+        assert report.draft == draft
+        assert report.coherence.coherence_score > 0.5
+        assert report.ontological is not None
+        assert report.lacunae is not None
+        assert report.prescription is not None
+
+    def test_analyze_problematic_response(self) -> None:
+        """Test analysis detects problems in response."""
+        from nechto import ReflexionAnalyzer
+        
+        task = "Test"
+        draft = "This is absolutely certain. Always true. Never false."
+        
+        analyzer = ReflexionAnalyzer()
+        report = analyzer.analyze(task, draft)
+        
+        # Should detect epistemic violations
+        assert len(report.ontological.epistemic_violations) > 0
+        # Coherence should be lower
+        assert report.coherence.coherence_score < 1.0
+
+    def test_ontological_analysis(self) -> None:
+        """Test ontological assumptions detection."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        draft_with_binary = "Either this or that, because of linear causality"
+        
+        report = analyzer.analyze("test", draft_with_binary)
+        
+        # Should detect binary logic assumption
+        assert len(report.ontological.hidden_assumptions) > 0
+
+    def test_lacuna_detection(self) -> None:
+        """Test semantic lacuna detection."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        # Long draft without temporal or phenomenological dimensions
+        draft = "This is a response. " * 50
+        
+        report = analyzer.analyze("test", draft)
+        
+        # Should identify missing dimensions
+        assert len(report.lacunae.identified_lacunae) > 0 or len(report.lacunae.missing_aspects) > 0
+
+    def test_coherence_validation(self) -> None:
+        """Test coherence validation."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        
+        # Coherent response
+        coherent = "OBSERVED: facts. INFERRED: conclusions. MU: unknowns."
+        report1 = analyzer.analyze("test", coherent)
+        
+        # Incoherent response with absolute claims
+        incoherent = "This is absolutely certain without any doubt whatsoever."
+        report2 = analyzer.analyze("test", incoherent)
+        
+        assert report1.coherence.coherence_score > report2.coherence.coherence_score
+
+    def test_transformation_prescription(self) -> None:
+        """Test transformation prescription generation."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        draft = "Absolute statement without qualification."
+        
+        report = analyzer.analyze("test", draft)
+        
+        # Should generate corrections
+        assert len(report.prescription.corrections) > 0
+        assert len(report.prescription.priority_order) == len(report.prescription.corrections)
+
+    def test_report_to_markdown(self) -> None:
+        """Test markdown report generation."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        report = analyzer.analyze("test", "sample draft")
+        
+        markdown = report.to_markdown()
+        
+        assert "# REFLEXION ANALYSIS REPORT" in markdown
+        assert "ONTOLOGICAL ASSUMPTIONS" in markdown
+        assert "SEMANTIC LACUNA" in markdown
+        assert "COHERENCE VALIDATION" in markdown
+        assert "TRANSFORMATION PRESCRIPTION" in markdown
+
+    def test_report_to_dict(self) -> None:
+        """Test dictionary export."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        report = analyzer.analyze("test task", "test draft")
+        
+        data = report.to_dict()
+        
+        assert "task" in data
+        assert "draft" in data
+        assert "ontological" in data
+        assert "lacunae" in data
+        assert "coherence" in data
+        assert "prescription" in data
+
+    def test_pev_compatibility_check(self) -> None:
+        """Test PEV axiom compatibility checking."""
+        from nechto import ReflexionAnalyzer
+        
+        analyzer = ReflexionAnalyzer()
+        
+        # Draft with MU-logic
+        draft_with_mu = "MU: I don't know. This is a paradox."
+        report = analyzer.analyze("test", draft_with_mu)
+        
+        assert "MU-Logic" in report.ontological.pev_compatibility
+        assert report.ontological.pev_compatibility["MU-Logic"] == True

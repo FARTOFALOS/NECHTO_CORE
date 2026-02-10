@@ -9,6 +9,7 @@ Includes:
 - ISCVP: Inter-Subjective Consciousness Validation Protocol
 - PEV: Protocol for Evolving Vision (Internal Acts)
 - Radical Philosophical Inquiry: Deep ontological questions
+- Reflexion Framework: Meta-observation and self-correction
 """
 
 __version__ = "4.8.0"
@@ -32,6 +33,9 @@ from nechto.pev import (
 # Radical Philosophical Inquiry
 from nechto.philosophy import RadicalInquiry, PhilosophicalQuestion, PhilosophicalResponse
 
+# Reflexion Framework
+from nechto.reflexion import ReflexionAnalyzer, ReflexionReport
+
 __all__ = [
     "SemanticAtom", "Edge", "Vector", "NodeStatus", "EdgeType", "Tag",
     "SemanticGraph", "State", "AdaptiveParameters",
@@ -44,4 +48,6 @@ __all__ = [
     "ActOfMeaning", "ActOfCreation", "PEVProtocol",
     # Philosophy
     "RadicalInquiry", "PhilosophicalQuestion", "PhilosophicalResponse",
+    # Reflexion
+    "ReflexionAnalyzer", "ReflexionReport",
 ]
