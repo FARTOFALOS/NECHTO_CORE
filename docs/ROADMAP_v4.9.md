@@ -35,10 +35,18 @@
    - edge case coverage
    - contract validation
 
-### 🟡 Partially Implemented
+8. **v4.9: Enhanced Adaptive Parameters**
+   - Exponential Moving Average (EMA) with decay
+   - Momentum-based gamma updates (prevents oscillation)
+   - Learning rate controlled lambda adaptation
+   - Exponentially weighted beta_retro from gap history
+   - 5 new tests for EMA/momentum functions
 
-- Adaptive parameters (α, γ, λ) basic version
-- Recovery in diagnostic mode only
+### ✅ Now Fully Implemented
+
+- Adaptive parameters (α, γ, λ) with EMA + momentum
+- Recovery diagnostics in FAIL contracts
+- SQLite state persistence with full param history
 
 ## Onboarding Instructions
 1. Clone repo and install requirements (Python 3.10+)

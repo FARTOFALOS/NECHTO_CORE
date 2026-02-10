@@ -1,7 +1,11 @@
 """Tests for adaptive parameters learning (Part 3.5 / Phase 12)."""
 
 from nechto_runtime.types import State, AdaptiveParameters
-from nechto_runtime.metrics import update_adaptive_parameters
+from nechto_runtime.metrics import (
+    update_adaptive_parameters,
+    _exponential_moving_average,
+    _momentum_update,
+)
 
 
 def test_adaptive_params_defaults():
@@ -13,6 +17,48 @@ def test_adaptive_params_defaults():
     assert p.delta == 0.6
     assert p.lambda_val == 0.8
     assert p.beta_retro == 0.2
+
+
+# === v4.9 TESTS: EMA and Momentum ===
+
+def test_ema_empty_history():
+    """EMA with empty history should return the new value."""
+    result = _exponential_moving_average([], 0.7, decay=0.15)
+    assert result == 0.7
+
+
+def test_ema_smoothing():
+    """EMA should smooth values over time."""
+    history = [0.5, 0.6, 0.55]
+    result = _exponential_moving_average(history, 0.8, decay=0.15)
+    # EMA = 0.15 * 0.8 + 0.85 * 0.55 = 0.12 + 0.4675 = 0.5875
+    assert abs(result - 0.5875) < 1e-6
+
+
+def test_ema_decay_effect():
+    """Higher decay = faster adaptation to new values."""
+    history = [0.5]
+    low_decay = _exponential_moving_average(history, 0.9, decay=0.1)
+    high_decay = _exponential_moving_average(history, 0.9, decay=0.5)
+    # High decay adapts faster
+    assert high_decay > low_decay
+
+
+def test_momentum_update():
+    """Momentum should smooth parameter changes."""
+    result = _momentum_update(0.5, 0.8, momentum=0.9)
+    # result = 0.9 * 0.5 + 0.1 * 0.8 = 0.45 + 0.08 = 0.53
+    assert abs(result - 0.53) < 1e-6
+
+
+def test_momentum_prevents_oscillation():
+    """High momentum should keep value closer to current."""
+    current = 0.5
+    target = 1.0
+    high_momentum = _momentum_update(current, target, momentum=0.95)
+    low_momentum = _momentum_update(current, target, momentum=0.5)
+    # High momentum stays closer to current
+    assert abs(high_momentum - current) < abs(low_momentum - current)
 
 
 def test_adaptive_params_update():

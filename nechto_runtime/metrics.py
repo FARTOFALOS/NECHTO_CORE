@@ -305,38 +305,77 @@ def _compute_fp_recursive(vector: Vector, state: Optional[State] = None,
 
 
 # ---------------------------------------------------------------------------
-# Adaptive Parameters Learning (Part 3.5 / Phase 12)
+# Adaptive Parameters Learning (Part 3.5 / Phase 12) — v4.9 Enhanced
 # ---------------------------------------------------------------------------
+
+# === v4.9 COMPONENT: Exponential Moving Average with decay ===
+EMA_DECAY_ALPHA = 0.15  # Decay factor for alpha EMA (lower = more smoothing)
+EMA_DECAY_GAMMA = 0.20  # Decay factor for gamma EMA
+MOMENTUM_FACTOR = 0.9   # Momentum for preventing oscillation
+LEARNING_RATE = 0.1     # Base learning rate for lambda updates
+
+
+def _exponential_moving_average(history: List[float], new_value: float,
+                                 decay: float = 0.15) -> float:
+    """Compute EMA with configurable decay (v4.9).
+
+    EMA_t = decay * value_t + (1 - decay) * EMA_{t-1}
+    Provides smoother adaptation than simple moving average.
+    """
+    if not history:
+        return new_value
+    prev_ema = history[-1]
+    return decay * new_value + (1 - decay) * prev_ema
+
+
+def _momentum_update(current: float, target: float, momentum: float = 0.9) -> float:
+    """Apply momentum to parameter update (v4.9).
+
+    Prevents rapid oscillation by smoothing toward target.
+    """
+    return momentum * current + (1 - momentum) * target
 
 
 def update_adaptive_parameters(params: AdaptiveParameters, state: State,
                                 metrics: Dict[str, Any]) -> AdaptiveParameters:
     """Update alpha/gamma/lambda/beta_retro from history (Part 3.5).
 
-    f_alpha = moving_average(impact_of_RI, window=10)
-    f_gamma = clamp(0.2 + 0.6 x urgency_score, 0.2, 0.8)
-    f_lambda = clamp(prev + 0.1 x (effect - 0.5), 0.5, 1.0)
+    v4.9 Enhancement: Uses EMA with decay instead of simple moving average.
+    This provides smoother parameter adaptation and prevents oscillation.
+
+    f_alpha = EMA(impact_of_RI, decay=0.15)
+    f_gamma = momentum_update(current, clamp(0.2 + 0.6 x urgency_score, 0.2, 0.8))
+    f_lambda = clamp(prev + lr x (effect - 0.5), 0.5, 1.0)
     f_retro = clamp(observed_retro / max_effects, 0, 0.5)
     """
     cycle = state.current_cycle
     ri = metrics.get("SCAV_health", 0.5)
-    ri_history = [h[0] for h in state.alpha_history[-10:]] if state.alpha_history else [0.5]
-    ri_history.append(ri)
-    new_alpha = sum(ri_history[-10:]) / len(ri_history[-10:])
+
+    # v4.9: EMA-based alpha update
+    alpha_values = [h[0] for h in state.alpha_history[-10:]] if state.alpha_history else []
+    new_alpha = _exponential_moving_average(alpha_values, ri, decay=EMA_DECAY_ALPHA)
     new_alpha = max(0.0, min(1.0, new_alpha))
 
+    # v4.9: Momentum-smoothed gamma update
     ethical_score = metrics.get("Ethical_score_candidates", 0.5)
     urgency = 1.0 - ethical_score
-    new_gamma = max(0.2, min(0.8, 0.2 + 0.6 * urgency))
+    target_gamma = max(0.2, min(0.8, 0.2 + 0.6 * urgency))
+    new_gamma = _momentum_update(params.gamma, target_gamma, MOMENTUM_FACTOR)
 
+    # v4.9: Learning-rate controlled lambda update
     effect = metrics.get("Stereoscopic_alignment", 0.5)
     prev_lambda = params.lambda_val
-    new_lambda = max(0.5, min(1.0, prev_lambda + 0.1 * (effect - 0.5)))
+    delta_lambda = LEARNING_RATE * (effect - 0.5)
+    new_lambda = max(0.5, min(1.0, prev_lambda + delta_lambda))
 
+    # beta_retro: based on gap history with soft decay
     if state.gap_max_history:
         max_gap = max(state.gap_max_history)
-        mean_gap = sum(state.gap_max_history) / len(state.gap_max_history)
-        new_beta_retro = max(0.0, min(0.5, mean_gap / max(1.0, max_gap + 1.0)))
+        # v4.9: Use recent window with exponential weighting
+        recent_gaps = list(state.gap_max_history)[-5:]
+        weights = [0.5 ** i for i in range(len(recent_gaps) - 1, -1, -1)]
+        weighted_mean = sum(g * w for g, w in zip(recent_gaps, weights)) / sum(weights)
+        new_beta_retro = max(0.0, min(0.5, weighted_mean / max(1.0, max_gap + 1.0)))
     else:
         new_beta_retro = params.beta_retro
 
