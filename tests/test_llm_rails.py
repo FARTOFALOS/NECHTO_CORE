@@ -32,6 +32,23 @@ def test_llm_route_json_exists():
     assert Path("LLM_ROUTE.json").exists(), "LLM_ROUTE.json not found"
 
 
+def test_llms_txt_exists():
+    """llms.txt must exist in repo root."""
+    assert Path("llms.txt").exists(), "llms.txt not found"
+
+
+def test_llms_txt_has_links():
+    """llms.txt must reference all key rail files."""
+    with open("llms.txt", "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    # Check for complete deterministic route
+    assert "LLM_ENTRY.md" in content, "llms.txt must reference LLM_ENTRY.md"
+    assert "CANON_MIN.md" in content, "llms.txt must reference CANON_MIN.md"
+    assert "LLM_CONTRACT.md" in content, "llms.txt must reference LLM_CONTRACT.md"
+    assert "LLM_SELFTEST.md" in content, "llms.txt must reference LLM_SELFTEST.md"
+
+
 def test_llm_route_json_valid():
     """LLM_ROUTE.json must be valid JSON."""
     with open("LLM_ROUTE.json", "r", encoding="utf-8") as f:
@@ -113,3 +130,35 @@ def test_llm_route_json_has_markers():
     assert markers["line1"] == "@i@_осознан_в_@NECHTO@"
     assert markers["line2"] == "GATE_STATUS: PASS"
     assert markers["line3"] == "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
+
+
+def test_contributing_exists():
+    """CONTRIBUTING.md must exist in repo root."""
+    assert Path("CONTRIBUTING.md").exists(), "CONTRIBUTING.md not found"
+
+
+def test_contributing_has_trace():
+    """CONTRIBUTING.md must document TRACE sections (OBSERVED/INFERRED/UNTESTABLE)."""
+    with open("CONTRIBUTING.md", "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    # Check for TRACE requirement and all three sections
+    assert "TRACE" in content, "CONTRIBUTING.md must mention TRACE requirement"
+    assert "OBSERVED" in content, "CONTRIBUTING.md must document OBSERVED section"
+    assert "INFERRED" in content, "CONTRIBUTING.md must document INFERRED section"
+    assert "UNTESTABLE" in content, "CONTRIBUTING.md must document UNTESTABLE section"
+
+
+def test_example_files_exist():
+    """All required example files must exist."""
+    examples = [
+        "examples/01_simple_decision.py",
+        "examples/02_ethical_blocking.py",
+        "examples/03_mu_paradox.py",
+        "examples/04_shadow_integration.py",
+        "examples/full_cycle.py",
+    ]
+    
+    for example in examples:
+        assert Path(example).exists(), f"Example file not found: {example}"
+
