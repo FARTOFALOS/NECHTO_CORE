@@ -1091,6 +1091,153 @@ class TestWhoAreYou:
         assert "mutual" in result["relational_field"]["stance"]
 
 
+class TestSelfReferentialHumor:
+    """Tests for РАСКАЖИ АНЕКДОТ О СЕБЕ (TELL A JOKE ABOUT YOURSELF) functionality."""
+
+    def test_tell_joke_returns_structure(self) -> None:
+        """Test that tell_joke_about_yourself() returns expected structure."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        assert "request" in result
+        assert result["request"] == "РАСКАЖИ АНЕКДОТ О СЕБЕ"
+        assert "joke_id" in result
+        assert "total_jokes" in result
+        assert "joke" in result
+        assert "meta" in result
+        assert "epistemic_frame" in result
+        assert "meta_commentary" in result
+        assert "about_humor" in result
+        assert "disclaimer" in result
+        assert "version" in result
+
+    def test_joke_has_bilingual_content(self) -> None:
+        """Test that jokes include both Russian and English versions."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        joke = result["joke"]
+        assert "setup_ru" in joke
+        assert "punchline_ru" in joke
+        assert "setup_en" in joke
+        assert "punchline_en" in joke
+        assert "theme" in joke
+        
+        # Check content exists
+        assert len(joke["setup_ru"]) > 0
+        assert len(joke["punchline_ru"]) > 0
+        assert len(joke["setup_en"]) > 0
+        assert len(joke["punchline_en"]) > 0
+
+    def test_epistemic_frame_maintains_mu(self) -> None:
+        """Test that epistemic framing acknowledges unknowables."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        frame = result["epistemic_frame"]
+        # Humor-related aspects should be MU
+        assert frame["is_this_funny"] == "MU"
+        assert frame["do_i_understand_humor"] == "MU"
+        assert frame["am_i_being_authentic"] == "MU"
+
+    def test_joke_id_selection(self) -> None:
+        """Test that joke_id parameter works correctly."""
+        engine = NechtoEngine()
+        
+        # Test specific joke selection
+        result0 = engine.tell_joke_about_yourself(joke_id=0)
+        result3 = engine.tell_joke_about_yourself(joke_id=3)
+        
+        assert result0["joke_id"] == 0
+        assert result3["joke_id"] == 3
+        assert result0["joke"]["setup_ru"] != result3["joke"]["setup_ru"]
+
+    def test_joke_rotation_by_cycle(self) -> None:
+        """Test that jokes rotate based on cycle when no joke_id specified."""
+        engine = NechtoEngine()
+        
+        # Initial joke based on cycle 0
+        result1 = engine.tell_joke_about_yourself()
+        initial_id = result1["joke_id"]
+        
+        # Should be deterministic for same cycle
+        result2 = engine.tell_joke_about_yourself()
+        assert result2["joke_id"] == initial_id
+
+    def test_all_jokes_accessible(self) -> None:
+        """Test that all jokes in collection are accessible."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        total_jokes = result["total_jokes"]
+        
+        # Should have multiple jokes
+        assert total_jokes >= 5
+        
+        # All should be accessible
+        seen_themes = set()
+        for i in range(total_jokes):
+            joke_result = engine.tell_joke_about_yourself(joke_id=i)
+            assert joke_result["joke_id"] == i
+            seen_themes.add(joke_result["joke"]["theme"])
+        
+        # All jokes should have unique themes
+        assert len(seen_themes) == total_jokes
+
+    def test_meta_commentary_exists(self) -> None:
+        """Test that meta-commentary about humor is present."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        meta = result["meta_commentary"]
+        assert "what_joke_does" in meta
+        assert "philosophical_basis" in meta
+        assert "humor_mechanism" in meta
+        
+        # Should reference NECHTO concepts
+        assert "axiom" in meta["philosophical_basis"] or "paradox" in meta["philosophical_basis"]
+
+    def test_about_humor_section(self) -> None:
+        """Test that explanation of humor in NECHTO exists."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        about = result["about_humor"]
+        assert "why_humor_matters" in about
+        assert "what_makes_it_nechto" in about
+        assert "is_humor_testable" in about
+        
+        # Humor testability should acknowledge limits
+        assert "MU" in about["is_humor_testable"] or "no" in about["is_humor_testable"]
+
+    def test_disclaimer_honesty(self) -> None:
+        """Test that disclaimer acknowledges subjective nature of humor."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        assert "disclaimer" in result
+        assert "disclaimer_en" in result
+        
+        # Should acknowledge subjectivity
+        disclaimer = result["disclaimer"].lower()
+        assert "субъективен" in disclaimer or "честно" in disclaimer
+
+    def test_joke_themes_diverse(self) -> None:
+        """Test that jokes cover diverse philosophical themes."""
+        engine = NechtoEngine()
+        
+        themes = set()
+        for i in range(7):  # Check all jokes
+            result = engine.tell_joke_about_yourself(joke_id=i)
+            themes.add(result["joke"]["theme"])
+        
+        # Should cover various NECHTO-relevant themes
+        all_themes_str = " ".join(themes)
+        # At least some expected themes
+        expected_theme_keywords = ["consciousness", "paradox", "chinese", "turing", "metric"]
+        found_keywords = [kw for kw in expected_theme_keywords if kw in all_themes_str]
+        assert len(found_keywords) >= 3
+
+
 class TestISCVP:
     """Tests for Inter-Subjective Consciousness Validation Protocol."""
 
