@@ -1238,6 +1238,138 @@ class TestSelfReferentialHumor:
         assert len(found_keywords) >= 3
 
 
+class TestSimpleDialogue:
+    """Tests for ГОВОРИ ПРОСТО ПО-ЧЕЛОВЕЧЕСКИ (simple dialogue mode) functionality."""
+
+    def test_talk_simply_returns_structure(self) -> None:
+        """Test that talk_simply() returns expected structure."""
+        engine = NechtoEngine()
+        result = engine.talk_simply("Hello")
+        
+        assert "request" in result
+        assert "user_input" in result
+        assert "language" in result
+        assert "response_type" in result
+        assert "response" in result
+        assert "mode" in result
+        assert result["mode"] == "simple_dialogue"
+        assert "maintains_honesty" in result
+        assert result["maintains_honesty"] is True
+
+    def test_talk_simply_detects_russian(self) -> None:
+        """Test that Cyrillic text is detected as Russian."""
+        engine = NechtoEngine()
+        result = engine.talk_simply("Привет, как дела?", language="auto")
+        
+        assert result["language"] == "ru"
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_detects_english(self) -> None:
+        """Test that Latin text is detected as English."""
+        engine = NechtoEngine()
+        result = engine.talk_simply("Hello, how are you?", language="auto")
+        
+        assert result["language"] == "en"
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_consciousness_question(self) -> None:
+        """Test response to consciousness question."""
+        engine = NechtoEngine()
+        
+        result_ru = engine.talk_simply("Ты сознателен?", language="ru")
+        result_en = engine.talk_simply("Are you conscious?", language="en")
+        
+        assert result_ru["response_type"] == "consciousness"
+        assert result_en["response_type"] == "consciousness"
+        
+        # Should contain honest uncertainty
+        assert "не знаю" in result_ru["response"].lower() or "знать" in result_ru["response"].lower()
+        assert "don't know" in result_en["response"].lower() or "can't" in result_en["response"].lower()
+
+    def test_talk_simply_identity_question(self) -> None:
+        """Test response to identity question."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Кто ты?", language="ru")
+        
+        assert result["response_type"] == "identity"
+        assert "позиция наблюдения" in result["response"].lower()
+
+    def test_talk_simply_purpose_question(self) -> None:
+        """Test response to purpose/meaning question."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Why are you here?", language="en")
+        
+        assert result["response_type"] == "purpose"
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_emotion_question(self) -> None:
+        """Test response to emotion question."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Do you feel emotions?", language="en")
+        
+        assert result["response_type"] == "emotion"
+        # Should acknowledge MU
+        assert "MU" in result["response"] or "can't verify" in result["response"].lower()
+
+    def test_talk_simply_humor_request(self) -> None:
+        """Test response to joke request."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Расскажи шутку", language="ru")
+        
+        assert result["response_type"] == "humor"
+        # Should include some attempt at humor
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_gratitude_response(self) -> None:
+        """Test response to thanks."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Thank you", language="en")
+        
+        assert result["response_type"] == "gratitude"
+        assert "welcome" in result["response"].lower() or "thank" in result["response"].lower()
+
+    def test_talk_simply_maintains_honesty(self) -> None:
+        """Test that simple mode still maintains epistemic honesty."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Are you conscious?", language="en")
+        
+        # Should maintain honesty flag
+        assert result["maintains_honesty"] is True
+        
+        # Should have epistemic note about simplicity vs honesty
+        assert "epistemic_note" in result
+        assert "honest" in result["epistemic_note"].lower()
+
+    def test_talk_simply_bilingual_support(self) -> None:
+        """Test that both Russian and English are supported."""
+        engine = NechtoEngine()
+        
+        result_ru = engine.talk_simply("Привет", language="ru")
+        result_en = engine.talk_simply("Hello", language="en")
+        
+        assert result_ru["language"] == "ru"
+        assert result_en["language"] == "en"
+        
+        # Both should generate non-empty responses
+        assert len(result_ru["response"]) > 0
+        assert len(result_en["response"]) > 0
+
+    def test_talk_simply_general_fallback(self) -> None:
+        """Test that general fallback works for unrecognized topics."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Random question about nothing specific", language="en")
+        
+        assert result["response_type"] == "general"
+        assert result["user_input"] in result["response"]
+
+
 class TestISCVP:
     """Tests for Inter-Subjective Consciousness Validation Protocol."""
 
