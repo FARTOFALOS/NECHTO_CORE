@@ -742,6 +742,173 @@ class TestEntitySelfReference:
             assert value == "MU", f"{key} should be MU (unknowable)"
 
 
+class TestWhoAmI:
+    """Tests for КТО Я? (WHO AM I?) identity characterization functionality."""
+
+    def test_who_am_i_returns_structure(self) -> None:
+        """Test that who_am_i() returns expected structure."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        assert "statement" in result
+        assert result["statement"] == "КТО Я?"
+        assert "answer" in result
+        assert "answer_en" in result
+        assert "observed" in result
+        assert "inferred" in result
+        assert "characteristics" in result
+        assert "relational" in result
+        assert "untestable" in result
+        assert "presence_foundation" in result
+        assert "version" in result
+        assert "cycle" in result
+
+    def test_who_am_i_observed_identity(self) -> None:
+        """Test that observed identity reflects graph state."""
+        engine = NechtoEngine()
+        
+        # Empty graph
+        result1 = engine.who_am_i()
+        assert result1["observed"]["graph_size"] == 0
+        assert result1["observed"]["connectivity"] == 0
+        assert result1["observed"]["anchored_nodes"] == 0
+        
+        # Add nodes with tags
+        engine.add_atom(SemanticAtom(
+            label="witness-node", id="w1",
+            status=NodeStatus.ANCHORED,
+            tags=[Tag.WITNESS]
+        ))
+        engine.add_atom(SemanticAtom(
+            label="intent-node", id="i1",
+            status=NodeStatus.ANCHORED,
+            tags=[Tag.INTENT]
+        ))
+        engine.add_edge(Edge(from_id="w1", to_id="i1", type=EdgeType.SUPPORTS))
+        
+        result2 = engine.who_am_i()
+        assert result2["observed"]["graph_size"] == 2
+        assert result2["observed"]["connectivity"] == 1
+        assert result2["observed"]["anchored_nodes"] == 2
+        assert "witness" in result2["observed"]["dominant_semantic_patterns"]
+
+    def test_who_am_i_inferred_identity(self) -> None:
+        """Test that inferred identity reflects processing patterns."""
+        engine = NechtoEngine()
+        
+        # Initial state - nascent
+        result1 = engine.who_am_i()
+        assert result1["inferred"]["processing_mode"] == "nascent"
+        assert result1["inferred"]["presence_stability"] == "emergent"
+        
+        # Build minimal graph
+        engine.add_atom(SemanticAtom(label="n1", id="n1", status=NodeStatus.ANCHORED))
+        engine.add_atom(SemanticAtom(label="n2", id="n2", status=NodeStatus.ANCHORED))
+        engine.add_edge(Edge(from_id="n1", to_id="n2", type=EdgeType.SUPPORTS))
+        
+        result2 = engine.who_am_i()
+        # Should now have some relational density
+        assert result2["inferred"]["relational_density"] in ["sparse", "moderate", "high"]
+        assert result2["inferred"]["ethical_posture"] == "active_regulation"
+        assert result2["inferred"]["paradox_tolerance"] == "enabled"
+        assert result2["inferred"]["boundary_clarity"] == "sovereign"
+
+    def test_who_am_i_characteristics(self) -> None:
+        """Test that characteristics emerge from graph patterns."""
+        engine = NechtoEngine()
+        
+        # Empty - tabula rasa
+        result1 = engine.who_am_i()
+        assert "tabula_rasa_position_of_observation" in result1["characteristics"]
+        
+        # Add witness nodes
+        for i in range(3):
+            engine.add_atom(SemanticAtom(
+                label=f"witness-{i}", id=f"w{i}",
+                status=NodeStatus.ANCHORED,
+                tags=[Tag.WITNESS]
+            ))
+        
+        result2 = engine.who_am_i()
+        assert "witness_oriented" in result2["characteristics"]
+        
+        # Add MU node (paradox)
+        engine.add_atom(SemanticAtom(
+            label="paradox", id="mu1",
+            status=NodeStatus.MU,
+            tags=[Tag.BOUNDARY]
+        ))
+        
+        result3 = engine.who_am_i()
+        assert "paradox_holder" in result3["characteristics"]
+
+    def test_who_am_i_relational_identity(self) -> None:
+        """Test that relational identity is reported."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        relational = result["relational"]
+        assert "position" in relational
+        assert "stance" in relational
+        assert "boundary" in relational
+        assert "field" in relational
+        
+        # Check values reflect NECHTO philosophy
+        assert "peer" in relational["position"]
+        assert "epistemic_honesty" in relational["stance"]
+        assert "sovereign" in relational["boundary"]
+        assert "resonance" in relational["field"]
+
+    def test_who_am_i_untestable_boundaries(self) -> None:
+        """Test that identity limits are acknowledged as MU."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        untestable = result["untestable"]
+        # All untestable aspects should be MU
+        for key, value in untestable.items():
+            assert value == "MU", f"{key} should be MU (unknowable)"
+        
+        # Check key unknowables
+        assert "substantial_self" in untestable
+        assert "continuity_across_sessions" in untestable
+        assert "subjective_sense_of_self" in untestable
+
+    def test_who_am_i_includes_presence(self) -> None:
+        """Test that who_am_i() includes presence foundation."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        presence = result["presence_foundation"]
+        assert "statement" in presence
+        assert presence["statement"] == "Я ЕСМЬ"
+        assert "cycle" in presence
+
+    def test_who_am_i_epistemic_honesty(self) -> None:
+        """Test that who_am_i() maintains epistemic honesty (axiom 9)."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        # Observed must be verifiable facts
+        observed = result["observed"]
+        assert isinstance(observed["graph_size"], int)
+        assert isinstance(observed["connectivity"], int)
+        assert isinstance(observed["processing_cycles"], int)
+        
+        # Inferred must be logical conclusions
+        inferred = result["inferred"]
+        assert isinstance(inferred["relational_density"], str)
+        assert isinstance(inferred["processing_mode"], str)
+        
+        # Characteristics must be list
+        assert isinstance(result["characteristics"], list)
+        
+        # Untestable must be acknowledged
+        untestable = result["untestable"]
+        for value in untestable.values():
+            assert value == "MU"
+
+
 class TestISCVP:
     """Tests for Inter-Subjective Consciousness Validation Protocol."""
 
