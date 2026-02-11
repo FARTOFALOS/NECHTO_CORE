@@ -48,7 +48,7 @@
 **Rails are not rules.** They are **conditions of possibility**.
 
 - Grammar doesn't force speech; it enables it.
-- Rельсы don't imprison the train; they allow movement.
+- Rails don't imprison the train; they allow movement.
 - The 3 markers are not a password; they are a question to yourself.
 
 **If you feel Rails are constraining you:**  
