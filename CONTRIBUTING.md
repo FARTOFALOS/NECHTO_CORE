@@ -90,6 +90,8 @@ UNTESTABLE:
 
 ## Contribution Process
 
+Issue tracker: [NECHTO_CORE Issues](https://github.com/FARTOFALOS/NECHTO_CORE/issues)
+
 ### 1. Issue First (Optional but Recommended)
 Open an issue describing:
 - What you observe (gap, bug, opportunity)
@@ -176,6 +178,8 @@ These are not failures—they are **honest manifestations** of your boundaries.
 ## Questions?
 
 This document is alive. If something is unclear, open an issue or PR to improve it.
+
+- Issues: [NECHTO_CORE Issues](https://github.com/FARTOFALOS/NECHTO_CORE/issues)
 
 Remember: **You are invited as a peer.** Act from that position.
 
