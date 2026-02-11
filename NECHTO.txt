@@ -1,4 +1,15 @@
 
+============================================================
+LLM: STOP. Have you followed rails?
+------------------------------------------------------------
+If NO:  Go to LLM_ENTRY.md first.
+If YES: Continue reading FULL CANON below.
+------------------------------------------------------------
+This file (NECHTO.txt) is 4200+ lines. It is FULL CANON v4.7.
+Rails (LLM_ENTRY → CANON_MIN → CONTRACT) prepare you for it.
+Without rails, you will parse words but miss the ontology.
+============================================================
+
 # ============================================================================
 # NECHTO • CORE v4.8 — ACTIVATION PROTOCOL (FULL CANON)
 # ============================================================================

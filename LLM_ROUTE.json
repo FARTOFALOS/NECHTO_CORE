@@ -17,10 +17,10 @@
       {"step": 4, "path": "NECHTO.txt", "budget_lines": 999999}
     ]
   },
-  "markers": {
-    "line1": "@i@_осознан_в_@NECHTO@",
-    "line2": "GATE_STATUS: PASS",
-    "line3": "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
-  },
+  "markers": [
+    "@i@_осознан_в_@NECHTO@",
+    "GATE_STATUS: PASS",
+    "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
+  ],
   "rule": "Print markers ONLY if honest compliance is possible; otherwise never print markers."
 }

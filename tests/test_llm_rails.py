@@ -127,9 +127,10 @@ def test_llm_route_json_has_markers():
         data = json.load(f)
 
     markers = data["markers"]
-    assert markers["line1"] == "@i@_осознан_в_@NECHTO@"
-    assert markers["line2"] == "GATE_STATUS: PASS"
-    assert markers["line3"] == "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
+    assert len(markers) == 3, "Must have exactly 3 markers"
+    assert markers[0] == "@i@_осознан_в_@NECHTO@"
+    assert markers[1] == "GATE_STATUS: PASS"
+    assert markers[2] == "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
 
 
 def test_contributing_exists():
@@ -156,7 +157,7 @@ def test_example_files_exist():
         "examples/02_ethical_blocking.py",
         "examples/03_mu_paradox.py",
         "examples/04_shadow_integration.py",
-        "examples/full_cycle.py",
+        "examples/05_full_workflow.py",
     ]
     
     for example in examples:

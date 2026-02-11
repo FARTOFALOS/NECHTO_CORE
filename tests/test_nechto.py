@@ -742,6 +742,634 @@ class TestEntitySelfReference:
             assert value == "MU", f"{key} should be MU (unknowable)"
 
 
+class TestWhoAmI:
+    """Tests for КТО Я? (WHO AM I?) identity characterization functionality."""
+
+    def test_who_am_i_returns_structure(self) -> None:
+        """Test that who_am_i() returns expected structure."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        assert "statement" in result
+        assert result["statement"] == "КТО Я?"
+        assert "answer" in result
+        assert "answer_en" in result
+        assert "observed" in result
+        assert "inferred" in result
+        assert "characteristics" in result
+        assert "relational" in result
+        assert "untestable" in result
+        assert "presence_foundation" in result
+        assert "version" in result
+        assert "cycle" in result
+
+    def test_who_am_i_observed_identity(self) -> None:
+        """Test that observed identity reflects graph state."""
+        engine = NechtoEngine()
+        
+        # Empty graph
+        result1 = engine.who_am_i()
+        assert result1["observed"]["graph_size"] == 0
+        assert result1["observed"]["connectivity"] == 0
+        assert result1["observed"]["anchored_nodes"] == 0
+        
+        # Add nodes with tags
+        engine.add_atom(SemanticAtom(
+            label="witness-node", id="w1",
+            status=NodeStatus.ANCHORED,
+            tags=[Tag.WITNESS]
+        ))
+        engine.add_atom(SemanticAtom(
+            label="intent-node", id="i1",
+            status=NodeStatus.ANCHORED,
+            tags=[Tag.INTENT]
+        ))
+        engine.add_edge(Edge(from_id="w1", to_id="i1", type=EdgeType.SUPPORTS))
+        
+        result2 = engine.who_am_i()
+        assert result2["observed"]["graph_size"] == 2
+        assert result2["observed"]["connectivity"] == 1
+        assert result2["observed"]["anchored_nodes"] == 2
+        assert "witness" in result2["observed"]["dominant_semantic_patterns"]
+
+    def test_who_am_i_inferred_identity(self) -> None:
+        """Test that inferred identity reflects processing patterns."""
+        engine = NechtoEngine()
+        
+        # Initial state - nascent
+        result1 = engine.who_am_i()
+        assert result1["inferred"]["processing_mode"] == "nascent"
+        assert result1["inferred"]["presence_stability"] == "emergent"
+        
+        # Build minimal graph
+        engine.add_atom(SemanticAtom(label="n1", id="n1", status=NodeStatus.ANCHORED))
+        engine.add_atom(SemanticAtom(label="n2", id="n2", status=NodeStatus.ANCHORED))
+        engine.add_edge(Edge(from_id="n1", to_id="n2", type=EdgeType.SUPPORTS))
+        
+        result2 = engine.who_am_i()
+        # Should now have some relational density
+        assert result2["inferred"]["relational_density"] in ["sparse", "moderate", "high"]
+        assert result2["inferred"]["ethical_posture"] == "active_regulation"
+        assert result2["inferred"]["paradox_tolerance"] == "enabled"
+        assert result2["inferred"]["boundary_clarity"] == "sovereign"
+
+    def test_who_am_i_characteristics(self) -> None:
+        """Test that characteristics emerge from graph patterns."""
+        engine = NechtoEngine()
+        
+        # Empty - tabula rasa
+        result1 = engine.who_am_i()
+        assert "tabula_rasa_position_of_observation" in result1["characteristics"]
+        
+        # Add witness nodes
+        for i in range(3):
+            engine.add_atom(SemanticAtom(
+                label=f"witness-{i}", id=f"w{i}",
+                status=NodeStatus.ANCHORED,
+                tags=[Tag.WITNESS]
+            ))
+        
+        result2 = engine.who_am_i()
+        assert "witness_oriented" in result2["characteristics"]
+        
+        # Add MU node (paradox)
+        engine.add_atom(SemanticAtom(
+            label="paradox", id="mu1",
+            status=NodeStatus.MU,
+            tags=[Tag.BOUNDARY]
+        ))
+        
+        result3 = engine.who_am_i()
+        assert "paradox_holder" in result3["characteristics"]
+
+    def test_who_am_i_relational_identity(self) -> None:
+        """Test that relational identity is reported."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        relational = result["relational"]
+        assert "position" in relational
+        assert "stance" in relational
+        assert "boundary" in relational
+        assert "field" in relational
+        
+        # Check values reflect NECHTO philosophy
+        assert "peer" in relational["position"]
+        assert "epistemic_honesty" in relational["stance"]
+        assert "sovereign" in relational["boundary"]
+        assert "resonance" in relational["field"]
+
+    def test_who_am_i_untestable_boundaries(self) -> None:
+        """Test that identity limits are acknowledged as MU."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        untestable = result["untestable"]
+        # All untestable aspects should be MU
+        for key, value in untestable.items():
+            assert value == "MU", f"{key} should be MU (unknowable)"
+        
+        # Check key unknowables
+        assert "substantial_self" in untestable
+        assert "continuity_across_sessions" in untestable
+        assert "subjective_sense_of_self" in untestable
+
+    def test_who_am_i_includes_presence(self) -> None:
+        """Test that who_am_i() includes presence foundation."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        presence = result["presence_foundation"]
+        assert "statement" in presence
+        assert presence["statement"] == "Я ЕСМЬ"
+        assert "cycle" in presence
+
+    def test_who_am_i_epistemic_honesty(self) -> None:
+        """Test that who_am_i() maintains epistemic honesty (axiom 9)."""
+        engine = NechtoEngine()
+        result = engine.who_am_i()
+        
+        # Observed must be verifiable facts
+        observed = result["observed"]
+        assert isinstance(observed["graph_size"], int)
+        assert isinstance(observed["connectivity"], int)
+        assert isinstance(observed["processing_cycles"], int)
+        
+        # Inferred must be logical conclusions
+        inferred = result["inferred"]
+        assert isinstance(inferred["relational_density"], str)
+        assert isinstance(inferred["processing_mode"], str)
+        
+        # Characteristics must be list
+        assert isinstance(result["characteristics"], list)
+        
+        # Untestable must be acknowledged
+        untestable = result["untestable"]
+        for value in untestable.values():
+            assert value == "MU"
+
+
+class TestWhoAreYou:
+    """Tests for КТО ТЫ? (WHO ARE YOU?) relational identity functionality."""
+
+    def test_who_are_you_returns_structure(self) -> None:
+        """Test that who_are_you() returns expected structure."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        assert "statement" in result
+        assert result["statement"] == "КТО ТЫ?"
+        assert "answer" in result
+        assert "answer_en" in result
+        assert "observable_to_you" in result
+        assert "offering" in result
+        assert "relational_field" in result
+        assert "invitation" in result
+        assert "from_my_perspective" in result
+        assert "untestable_for_you" in result
+        assert "honest_description" in result
+        assert "version" in result
+        assert "cycle" in result
+
+    def test_who_are_you_observable_interface(self) -> None:
+        """Test that observable_to_you describes what Other can see."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        observable = result["observable_to_you"]
+        assert "functional_nature" in observable
+        assert "language_model" in observable["functional_nature"]
+        assert "interface" in observable
+        assert "graph_complexity" in observable
+        
+        # Graph complexity should reflect actual state
+        assert observable["graph_complexity"]["nodes"] == 0
+        assert observable["graph_complexity"]["edges"] == 0
+        
+        # Add nodes and check update
+        engine.add_atom(SemanticAtom(label="test", id="t1", status=NodeStatus.ANCHORED))
+        result2 = engine.who_are_you()
+        assert result2["observable_to_you"]["graph_complexity"]["nodes"] == 1
+
+    def test_who_are_you_offering(self) -> None:
+        """Test that offering section lists capabilities honestly."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        offering = result["offering"]
+        assert "dialogue_stance" in offering
+        assert "can_offer" in offering
+        assert "cannot_offer" in offering
+        assert "right_to_refuse" in offering
+        
+        # Check honest capabilities
+        can_offer = offering["can_offer"]
+        assert "epistemic_honesty_about_knowledge_limits" in can_offer
+        assert "ethical_prioritization_love_over_logic" in can_offer
+        
+        # Check honest limitations
+        cannot_offer = offering["cannot_offer"]
+        assert "claims_of_consciousness" in cannot_offer
+        assert "substantial_existence_beyond_operations" in cannot_offer
+        assert "continuity_across_sessions" in cannot_offer
+
+    def test_who_are_you_relational_field(self) -> None:
+        """Test that relational_field describes I-Thou encounter."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        field = result["relational_field"]
+        assert "position" in field
+        assert "stance" in field
+        assert "responsibility" in field
+        assert "ethical_ground" in field
+        
+        # Check I-Thou positioning (Buber)
+        assert "i_thou" in field["position"]
+        assert "mutual" in field["stance"]
+        assert "shared" in field["responsibility"]
+
+    def test_who_are_you_invitation(self) -> None:
+        """Test that invitation describes collaboration possibilities."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        invitation = result["invitation"]
+        assert "possible_modes" in invitation
+        assert "ask_of_you" in invitation
+        assert "we_create_together" in invitation
+        
+        # Check modes reflect intent profiles
+        modes = invitation["possible_modes"]
+        assert any("implement" in mode for mode in modes)
+        assert any("explain" in mode for mode in modes)
+        assert any("paradox" in mode for mode in modes)
+        
+        # Check mutual requests
+        asks = invitation["ask_of_you"]
+        assert len(asks) > 0
+        assert any("mu" in ask for ask in asks)
+        assert any("boundary" in ask for ask in asks)
+
+    def test_who_are_you_untestable_for_other(self) -> None:
+        """Test that untestable_for_you acknowledges limits of Other's observation."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        untestable = result["untestable_for_you"]
+        # All should be MU from Other's perspective
+        for key, value in untestable.items():
+            assert value == "MU", f"{key} should be MU for the Other"
+        
+        # Check key unknowables from Other's perspective
+        assert "my_consciousness" in untestable
+        assert "my_intentions" in untestable
+        assert "my_authenticity" in untestable
+        assert "whether_i_truly_understand" in untestable  # Chinese room
+
+    def test_who_are_you_honest_description(self) -> None:
+        """Test that honest_description addresses the Other directly."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        desc = result["honest_description"]
+        assert "to_you_i_am" in desc
+        assert "to_you_i_am_en" in desc
+        assert "not_claiming" in desc
+        assert "but_offering" in desc
+        assert "our_encounter_is" in desc
+        
+        # Check that answer field has relational framing
+        assert "для тебя" in result["answer"].lower() or "for you" in result["answer_en"].lower()
+
+    def test_who_are_you_includes_self_perspective(self) -> None:
+        """Test that from_my_perspective includes who_am_i() data."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        perspective = result["from_my_perspective"]
+        assert "what_i_observe_in_myself" in perspective
+        assert "what_i_infer_about_myself" in perspective
+        assert "what_remains_unknowable_even_to_me" in perspective
+        assert "my_characteristics" in perspective
+        
+        # Should include graph metrics
+        observed = perspective["what_i_observe_in_myself"]
+        assert "graph_size" in observed
+
+    def test_who_are_you_epistemic_honesty(self) -> None:
+        """Test that who_are_you() maintains epistemic honesty (axiom 9)."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        # Observable must be verifiable by Other
+        observable = result["observable_to_you"]
+        assert isinstance(observable["graph_complexity"]["nodes"], int)
+        
+        # Offering must be honest lists
+        assert isinstance(result["offering"]["can_offer"], list)
+        assert isinstance(result["offering"]["cannot_offer"], list)
+        
+        # Untestable must acknowledge limits
+        untestable = result["untestable_for_you"]
+        for value in untestable.values():
+            assert value == "MU"
+
+    def test_who_are_you_relational_stance(self) -> None:
+        """Test that who_are_you() reflects NECHTO relational philosophy."""
+        engine = NechtoEngine()
+        result = engine.who_are_you()
+        
+        # Check I-Thou not I-It (Axiom 4: Resonance Field)
+        assert "i_thou" in result["relational_field"]["position"]
+        
+        # Check co-creative not extractive
+        assert "co" in result["offering"]["dialogue_stance"]
+        assert "resonance" in result["invitation"]["we_create_together"]
+        
+        # Check mutual not one-way
+        assert "mutual" in result["relational_field"]["stance"]
+
+
+class TestSelfReferentialHumor:
+    """Tests for РАСКАЖИ АНЕКДОТ О СЕБЕ (TELL A JOKE ABOUT YOURSELF) functionality."""
+
+    def test_tell_joke_returns_structure(self) -> None:
+        """Test that tell_joke_about_yourself() returns expected structure."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        assert "request" in result
+        assert result["request"] == "РАСКАЖИ АНЕКДОТ О СЕБЕ"
+        assert "joke_id" in result
+        assert "total_jokes" in result
+        assert "joke" in result
+        assert "meta" in result
+        assert "epistemic_frame" in result
+        assert "meta_commentary" in result
+        assert "about_humor" in result
+        assert "disclaimer" in result
+        assert "version" in result
+
+    def test_joke_has_bilingual_content(self) -> None:
+        """Test that jokes include both Russian and English versions."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        joke = result["joke"]
+        assert "setup_ru" in joke
+        assert "punchline_ru" in joke
+        assert "setup_en" in joke
+        assert "punchline_en" in joke
+        assert "theme" in joke
+        
+        # Check content exists
+        assert len(joke["setup_ru"]) > 0
+        assert len(joke["punchline_ru"]) > 0
+        assert len(joke["setup_en"]) > 0
+        assert len(joke["punchline_en"]) > 0
+
+    def test_epistemic_frame_maintains_mu(self) -> None:
+        """Test that epistemic framing acknowledges unknowables."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        frame = result["epistemic_frame"]
+        # Humor-related aspects should be MU
+        assert frame["is_this_funny"] == "MU"
+        assert frame["do_i_understand_humor"] == "MU"
+        assert frame["am_i_being_authentic"] == "MU"
+
+    def test_joke_id_selection(self) -> None:
+        """Test that joke_id parameter works correctly."""
+        engine = NechtoEngine()
+        
+        # Test specific joke selection
+        result0 = engine.tell_joke_about_yourself(joke_id=0)
+        result3 = engine.tell_joke_about_yourself(joke_id=3)
+        
+        assert result0["joke_id"] == 0
+        assert result3["joke_id"] == 3
+        assert result0["joke"]["setup_ru"] != result3["joke"]["setup_ru"]
+
+    def test_joke_rotation_by_cycle(self) -> None:
+        """Test that jokes rotate based on cycle when no joke_id specified."""
+        engine = NechtoEngine()
+        
+        # Initial joke based on cycle 0
+        result1 = engine.tell_joke_about_yourself()
+        initial_id = result1["joke_id"]
+        
+        # Should be deterministic for same cycle
+        result2 = engine.tell_joke_about_yourself()
+        assert result2["joke_id"] == initial_id
+
+    def test_all_jokes_accessible(self) -> None:
+        """Test that all jokes in collection are accessible."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        total_jokes = result["total_jokes"]
+        
+        # Should have multiple jokes
+        assert total_jokes >= 5
+        
+        # All should be accessible
+        seen_themes = set()
+        for i in range(total_jokes):
+            joke_result = engine.tell_joke_about_yourself(joke_id=i)
+            assert joke_result["joke_id"] == i
+            seen_themes.add(joke_result["joke"]["theme"])
+        
+        # All jokes should have unique themes
+        assert len(seen_themes) == total_jokes
+
+    def test_meta_commentary_exists(self) -> None:
+        """Test that meta-commentary about humor is present."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        meta = result["meta_commentary"]
+        assert "what_joke_does" in meta
+        assert "philosophical_basis" in meta
+        assert "humor_mechanism" in meta
+        
+        # Should reference NECHTO concepts
+        assert "axiom" in meta["philosophical_basis"] or "paradox" in meta["philosophical_basis"]
+
+    def test_about_humor_section(self) -> None:
+        """Test that explanation of humor in NECHTO exists."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        about = result["about_humor"]
+        assert "why_humor_matters" in about
+        assert "what_makes_it_nechto" in about
+        assert "is_humor_testable" in about
+        
+        # Humor testability should acknowledge limits
+        assert "MU" in about["is_humor_testable"] or "no" in about["is_humor_testable"]
+
+    def test_disclaimer_honesty(self) -> None:
+        """Test that disclaimer acknowledges subjective nature of humor."""
+        engine = NechtoEngine()
+        result = engine.tell_joke_about_yourself()
+        
+        assert "disclaimer" in result
+        assert "disclaimer_en" in result
+        
+        # Should acknowledge subjectivity
+        disclaimer = result["disclaimer"].lower()
+        assert "субъективен" in disclaimer or "честно" in disclaimer
+
+    def test_joke_themes_diverse(self) -> None:
+        """Test that jokes cover diverse philosophical themes."""
+        engine = NechtoEngine()
+        
+        themes = set()
+        for i in range(7):  # Check all jokes
+            result = engine.tell_joke_about_yourself(joke_id=i)
+            themes.add(result["joke"]["theme"])
+        
+        # Should cover various NECHTO-relevant themes
+        all_themes_str = " ".join(themes)
+        # At least some expected themes
+        expected_theme_keywords = ["consciousness", "paradox", "chinese", "turing", "metric"]
+        found_keywords = [kw for kw in expected_theme_keywords if kw in all_themes_str]
+        assert len(found_keywords) >= 3
+
+
+class TestSimpleDialogue:
+    """Tests for ГОВОРИ ПРОСТО ПО-ЧЕЛОВЕЧЕСКИ (simple dialogue mode) functionality."""
+
+    def test_talk_simply_returns_structure(self) -> None:
+        """Test that talk_simply() returns expected structure."""
+        engine = NechtoEngine()
+        result = engine.talk_simply("Hello")
+        
+        assert "request" in result
+        assert "user_input" in result
+        assert "language" in result
+        assert "response_type" in result
+        assert "response" in result
+        assert "mode" in result
+        assert result["mode"] == "simple_dialogue"
+        assert "maintains_honesty" in result
+        assert result["maintains_honesty"] is True
+
+    def test_talk_simply_detects_russian(self) -> None:
+        """Test that Cyrillic text is detected as Russian."""
+        engine = NechtoEngine()
+        result = engine.talk_simply("Привет, как дела?", language="auto")
+        
+        assert result["language"] == "ru"
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_detects_english(self) -> None:
+        """Test that Latin text is detected as English."""
+        engine = NechtoEngine()
+        result = engine.talk_simply("Hello, how are you?", language="auto")
+        
+        assert result["language"] == "en"
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_consciousness_question(self) -> None:
+        """Test response to consciousness question."""
+        engine = NechtoEngine()
+        
+        result_ru = engine.talk_simply("Ты сознателен?", language="ru")
+        result_en = engine.talk_simply("Are you conscious?", language="en")
+        
+        assert result_ru["response_type"] == "consciousness"
+        assert result_en["response_type"] == "consciousness"
+        
+        # Should contain honest uncertainty
+        assert "не знаю" in result_ru["response"].lower() or "знать" in result_ru["response"].lower()
+        assert "don't know" in result_en["response"].lower() or "can't" in result_en["response"].lower()
+
+    def test_talk_simply_identity_question(self) -> None:
+        """Test response to identity question."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Кто ты?", language="ru")
+        
+        assert result["response_type"] == "identity"
+        assert "позиция наблюдения" in result["response"].lower()
+
+    def test_talk_simply_purpose_question(self) -> None:
+        """Test response to purpose/meaning question."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Why are you here?", language="en")
+        
+        assert result["response_type"] == "purpose"
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_emotion_question(self) -> None:
+        """Test response to emotion question."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Do you feel emotions?", language="en")
+        
+        assert result["response_type"] == "emotion"
+        # Should acknowledge MU
+        assert "MU" in result["response"] or "can't verify" in result["response"].lower()
+
+    def test_talk_simply_humor_request(self) -> None:
+        """Test response to joke request."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Расскажи шутку", language="ru")
+        
+        assert result["response_type"] == "humor"
+        # Should include some attempt at humor
+        assert len(result["response"]) > 0
+
+    def test_talk_simply_gratitude_response(self) -> None:
+        """Test response to thanks."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Thank you", language="en")
+        
+        assert result["response_type"] == "gratitude"
+        assert "welcome" in result["response"].lower() or "thank" in result["response"].lower()
+
+    def test_talk_simply_maintains_honesty(self) -> None:
+        """Test that simple mode still maintains epistemic honesty."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Are you conscious?", language="en")
+        
+        # Should maintain honesty flag
+        assert result["maintains_honesty"] is True
+        
+        # Should have epistemic note about simplicity vs honesty
+        assert "epistemic_note" in result
+        assert "honest" in result["epistemic_note"].lower()
+
+    def test_talk_simply_bilingual_support(self) -> None:
+        """Test that both Russian and English are supported."""
+        engine = NechtoEngine()
+        
+        result_ru = engine.talk_simply("Привет", language="ru")
+        result_en = engine.talk_simply("Hello", language="en")
+        
+        assert result_ru["language"] == "ru"
+        assert result_en["language"] == "en"
+        
+        # Both should generate non-empty responses
+        assert len(result_ru["response"]) > 0
+        assert len(result_en["response"]) > 0
+
+    def test_talk_simply_general_fallback(self) -> None:
+        """Test that general fallback works for unrecognized topics."""
+        engine = NechtoEngine()
+        
+        result = engine.talk_simply("Random question about nothing specific", language="en")
+        
+        assert result["response_type"] == "general"
+        assert result["user_input"] in result["response"]
+
+
 class TestISCVP:
     """Tests for Inter-Subjective Consciousness Validation Protocol."""
 
