@@ -9,7 +9,7 @@ libraries are required — the implementation relies on heuristic sentence
 splitting, keyword detection, and relation inference.
 
 Usage:
-    from nechto.bridge import LLMBridge
+    from nechto import LLMBridge
     bridge = LLMBridge()
     graph = bridge.text_to_graph("I think consciousness is an emergent phenomenon.")
 """

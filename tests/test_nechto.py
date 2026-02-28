@@ -50,12 +50,12 @@ from nechto.metrics.ethics import (
 )
 from nechto.metrics.temporal import ged_proxy_norm, expected_influence_on_present, fp_recursive
 
-from nechto.qmm.library import (
+from nechto.workflow.qmm_library import (
     QMM_ParadoxHolder, QMM_ParadoxCollapse, QMM_ShadowIntegration,
     QMM_FlowRestoration, QMM_EthicalOverride, QMM_EpistemicHonesty,
 )
-from nechto.gate.prrip import PRRIPGate, format_output_pass, format_output_fail
-from nechto.recovery.fail_codes import FailCode, get_fail_description
+from nechto.workflow.prrip import PRRIPGate, format_output_pass, format_output_fail
+from nechto.core.fail_codes import FailCode, get_fail_description
 from nechto.engine import NechtoEngine
 
 

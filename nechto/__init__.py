@@ -41,7 +41,7 @@ from nechto.philosophy import RadicalInquiry, PhilosophicalQuestion, Philosophic
 from nechto.reflexion import ReflexionAnalyzer, ReflexionReport
 
 # Bridge (v4.9)
-from nechto.bridge import LLMBridge
+from nechto.llm_bridge import LLMBridge
 
 __all__ = [
     "SemanticAtom", "Edge", "Vector", "NodeStatus", "EdgeType", "Tag",

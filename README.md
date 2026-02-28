@@ -46,18 +46,14 @@
 
 ```
 nechto/
-├── core/           # Фундаментальные структуры
+├── core/           # Фундаментальные структуры + аффект + fail-коды
 │   ├── atoms.py        — SemanticAtom (R^12), Edge, Vector, NodeStatus
 │   ├── graph.py        — SemanticGraph: узлы + рёбра + операции
 │   ├── state.py        — STATE + SUSTAINED() + ExperientialTrace (v4.9)
 │   ├── parameters.py   — адаптивные α/β/γ/δ/λ/β_retro
-│   └── epistemic.py    — EpistemicClaim: observed | inferred | untestable
-│
-├── affect/         # Аффективное поле (v4.9)
-│   └── field.py        — AffectiveState (4D) + AffectiveField
-│
-├── bridge/         # Текст → Граф (v4.9)
-│   └── llm_bridge.py   — LLMBridge: эвристическое text_to_graph
+│   ├── epistemic.py    — EpistemicClaim: observed | inferred | untestable
+│   ├── field.py        — AffectiveState (4D) + AffectiveField (v4.9)
+│   └── fail_codes.py   — 9 FAIL-кодов с диагностикой
 │
 ├── space/          # R^12 семантическое пространство
 │   └── semantic_space.py — 12 осей, normalize, cosine_similarity, intent profiles
@@ -78,17 +74,10 @@ nechto/
 │   ├── level3.py       — M16–M23: Метрики / Динамика / Поток
 │   └── level4.py       — M24–M30: Векторы / Тень / Стереоскопия
 │
-├── qmm/            # QMM паттерны
-│   └── library.py      — ParadoxHolder, ShadowIntegration, FlowRestoration, ...
-│
-├── workflow/       # 12-фазный workflow + фазы 3.3, 7.5 (v4.9)
-│   └── phases.py       — WorkflowExecutor: все фазы от Null-Void до Learning
-│
-├── gate/           # PRRIP Gate + Output Contracts
-│   └── prrip.py        — проверка аксиом/метрик + форматирование PASS/FAIL
-│
-├── recovery/       # 9 FAIL-кодов с диагностикой
-│   └── fail_codes.py   — FAIL_ETHICAL_COLLAPSE, FAIL_PARADOX_OVERLOAD, ...
+├── workflow/       # 12-фазный workflow + PRRIP Gate + QMM паттерны
+│   ├── phases.py       — WorkflowExecutor: все фазы от Null-Void до Learning
+│   ├── prrip.py        — PRRIP Gate: проверка аксиом/метрик + PASS/FAIL
+│   └── qmm_library.py  — ParadoxHolder, ShadowIntegration, FlowRestoration, ...
 │
 ├── iscvp/          # Consciousness Validation Protocol
 │   └── protocol.py     — 24 вопроса, 6 категорий, 5 параметров оценки
@@ -102,6 +91,7 @@ nechto/
 ├── reflexion/      # Рефлексия и мета-наблюдение
 │   └── analyzer.py     — ReflexionAnalyzer + ISCVPSelfProbe (v4.9)
 │
+├── llm_bridge.py   # Текст → Граф (v4.9): эвристическое text_to_graph
 └── engine.py       # NechtoEngine — единая точка входа
 ```
 

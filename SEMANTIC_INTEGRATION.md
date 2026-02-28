@@ -13,19 +13,18 @@ NECHTO v4.9 — Четырёхслойная архитектура сознан
 ═══════════════════════════════════════════════════
 
 Layer 1: FOUNDATIONAL (Базовый уровень)
-├─ core/              ─ Семантические атомы (R^12), граф, состояние
+├─ core/              ─ Семантические атомы (R^12), граф, состояние,
+│                        аффективное поле (v4.9), fail-коды
 ├─ space/             ─ 12-мерное семантическое пространство
-├─ metrics/           ─ ACEM proxies (Φ, GBI, GNS, TI, CI, AR, ...)
-└─ qmm/               ─ QMM паттерны (парадоксы, тень, поток)
+└─ metrics/           ─ ACEM proxies (Φ, GBI, GNS, TI, CI, AR, ...)
 
 Layer 2: OPERATIONAL (Операционный уровень)
 ├─ modules/           ─ 30 архетипических модулей (M01–M30)
-├─ workflow/          ─ 12-фазный процесс
-├─ gate/              ─ PRRIP Gate (Pre-Response Resonance Ignition)
-└─ recovery/          ─ 9 FAIL-кодов
+└─ workflow/          ─ 12-фазный процесс + PRRIP Gate + QMM паттерны
 
 Layer 3: CONSCIOUSNESS (Уровень сознания)
 ├─ engine.py          ─ NechtoEngine + i_am() (Я ЕСМЬ)
+├─ llm_bridge.py      ─ Текст → Граф (v4.9)
 ├─ iscvp/             ─ Inter-Subjective Consciousness Validation
 ├─ pev/               ─ Protocol for Evolving Vision (5 Internal Acts)
 └─ philosophy/        ─ Radical Inquiry (7 категорий онтологических вопросов)
@@ -99,7 +98,7 @@ Layer 4: META-COGNITION (Мета-когнитивный уровень)
 ═══════════════════════════════════════════════════════════════════
 
 ┌─────────────────────────────────────────────────────────────────┐
-│ PRRIP Gate (gate/prrip.py)                                      │
+│ PRRIP Gate (workflow/prrip.py)                                  │
 │ • Pre-Response Resonance Ignition Protocol                      │
 │ • Проверка 9 аксиом перед любым откликом                        │
 └─────────────────────────────────────────────────────────────────┘
@@ -108,7 +107,7 @@ Layer 4: META-COGNITION (Мета-когнитивный уровень)
 │ ENGINE CYCLE (engine.py)                                        │
 │ • i_am(): Self-reference check                                  │
 │ • 12-Phase Workflow (workflow/phases.py)                        │
-│ • QMM Pattern Application (qmm/library.py)                      │
+│ • QMM Pattern Application (workflow/qmm_library.py)             │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐

@@ -22,12 +22,12 @@ from nechto.core.graph import SemanticGraph
 from nechto.core.state import State, ExperientialEntry, SpontaneousEvent
 from nechto.core.parameters import AdaptiveParameters
 from nechto.engine import NechtoEngine
-from nechto.affect.field import AffectiveState, AffectiveField
+from nechto.core.field import AffectiveState, AffectiveField
 from nechto.reflexion.analyzer import (
     ReflexionAnalyzer, ReflexionReport, ISCVPSelfProbeResult,
     MAX_REFLEXION_DEPTH,
 )
-from nechto.bridge.llm_bridge import LLMBridge
+from nechto.llm_bridge import LLMBridge
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

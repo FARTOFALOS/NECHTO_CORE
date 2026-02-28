@@ -46,12 +46,12 @@ from nechto.modules.level4 import (
 )
 from nechto.metrics import base, capital, scav as scav_mod, stereoscopic as stereo_mod
 from nechto.space.semantic_space import ideal_direction, normalize, norm, EPS
-from nechto.qmm.library import (
+from nechto.workflow.qmm_library import (
     QMM_ParadoxHolder, QMM_ParadoxCollapse, QMM_ShadowIntegration,
     QMM_FlowRestoration, QMM_EthicalOverride, QMM_EpistemicHonesty,
 )
-from nechto.gate.prrip import PRRIPGate, GateResult
-from nechto.affect.field import AffectiveField, AffectiveState
+from nechto.workflow.prrip import PRRIPGate, GateResult
+from nechto.core.field import AffectiveField, AffectiveState
 from nechto.reflexion.analyzer import ReflexionAnalyzer, ISCVPSelfProbeResult
 
 # Minimum candidate vectors to guarantee per spec v4.9

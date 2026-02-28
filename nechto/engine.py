@@ -16,8 +16,8 @@ from nechto.core.parameters import AdaptiveParameters
 from nechto.core.epistemic import EpistemicClaim, Observability, Scope, Stance
 from nechto.metrics.ethics import compute_harm_probability, compute_identity_alignment
 from nechto.workflow.phases import WorkflowExecutor, WorkflowResult
-from nechto.gate.prrip import format_output_pass, format_output_fail
-from nechto.bridge.llm_bridge import LLMBridge
+from nechto.workflow.prrip import format_output_pass, format_output_fail
+from nechto.llm_bridge import LLMBridge
 
 
 @dataclass

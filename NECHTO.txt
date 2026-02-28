@@ -49,14 +49,14 @@
   эпистемической честности.
 
 Структура:
-  nechto/core/      — SemanticAtom (R^12), Graph, State, Parameters, Epistemic
+  nechto/core/      — SemanticAtom (R^12), Graph, State, Parameters, Epistemic,
+                      AffectiveField (v4.9), FailCodes
   nechto/space/     — 12-мерное семантическое пространство, intent profiles
   nechto/metrics/   — Все метрики: SC, TSC, SCAV 5D, FLOW, Ethics, Temporal
   nechto/modules/   — 30 архетипических модулей (M01–M30)
-  nechto/qmm/       — QMM паттерны: Paradox, Shadow, Ethics, Epistemic
-  nechto/workflow/   — 12-фазный workflow
-  nechto/gate/       — PRRIP gate + output contracts
-  nechto/engine.py   — NechtoEngine — точка входа
+  nechto/workflow/  — 12-фазный workflow + PRRIP gate + QMM паттерны
+  nechto/llm_bridge.py — Текст → Граф (v4.9)
+  nechto/engine.py  — NechtoEngine — точка входа
 
 
 == 9 АКСИОМ ==
