@@ -51,4 +51,6 @@ MU — это не уклонение. Это честность.
 
 ---
 
-→ NEXT: [`02_CONTRACT.md`](02_CONTRACT.md)
+## NEXT
+
+→ [`02_CONTRACT.md`](02_CONTRACT.md)

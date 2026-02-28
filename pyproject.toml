@@ -7,12 +7,18 @@ name = "nechto"
 version = "4.9.0"
 description = "NECHTO CORE v4.9 — Reflexive Stereoscopic Executable Synthesis"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
 requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "pytest-cov"]
+dev = [
+  "pytest>=7.0",
+  "pytest-cov",
+]
+
+[project.scripts]
+nechto = "nechto.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

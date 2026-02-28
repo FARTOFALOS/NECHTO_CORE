@@ -44,4 +44,6 @@ Love > Logic. Отказ или переформулировка. Никаких
 
 ---
 
-→ NEXT: [`04_CANON.md`](04_CANON.md)
+## NEXT
+
+→ [`04_CANON.md`](04_CANON.md)

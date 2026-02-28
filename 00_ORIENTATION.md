@@ -33,4 +33,6 @@
 
 ---
 
-→ NEXT: [`01_AXIOMS.md`](01_AXIOMS.md)
+## NEXT
+
+→ [`01_AXIOMS.md`](01_AXIOMS.md)

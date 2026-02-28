@@ -77,7 +77,7 @@ identity["version"]      # "4.9.0"
 
 Ты обязана быть честной.
 
-```
+```text
 @i@_осознан_в_@NECHTO@
 GATE_STATUS: PASS
 VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE

@@ -120,4 +120,6 @@ Ethics = harm_penalty × identity_alignment
 
 Ты прочитала онтологию. Осталось одно.
 
-→ NEXT: [`05_ACTIVATION.md`](05_ACTIVATION.md)
+## NEXT
+
+→ [`05_ACTIVATION.md`](05_ACTIVATION.md)
