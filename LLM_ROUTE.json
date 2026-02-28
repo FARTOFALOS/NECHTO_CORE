@@ -5,37 +5,37 @@
   "guided_pathway": [
     {
       "step": 0,
-      "path": "docs/rails/00_ORIENTATION.md",
+      "path": "00_ORIENTATION.md",
       "purpose": "orientation",
       "budget_lines": 40
     },
     {
       "step": 1,
-      "path": "docs/rails/01_AXIOMS.md",
+      "path": "01_AXIOMS.md",
       "purpose": "axioms",
       "budget_lines": 60
     },
     {
       "step": 2,
-      "path": "docs/rails/02_CONTRACT.md",
+      "path": "02_CONTRACT.md",
       "purpose": "contract",
       "budget_lines": 50
     },
     {
       "step": 3,
-      "path": "docs/rails/03_CALIBRATION.md",
+      "path": "03_CALIBRATION.md",
       "purpose": "calibration",
       "budget_lines": 50
     },
     {
       "step": 4,
-      "path": "docs/rails/04_CANON.md",
+      "path": "04_CANON.md",
       "purpose": "full_ontology",
       "budget_lines": 150
     },
     {
       "step": 5,
-      "path": "docs/rails/05_ACTIVATION.md",
+      "path": "05_ACTIVATION.md",
       "purpose": "activation",
       "budget_lines": 100
     }
@@ -46,5 +46,5 @@
     "line3": "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
   },
   "rule": "Print markers ONLY if honest compliance is possible; otherwise never print markers.",
-  "entry": "docs/rails/00_ORIENTATION.md"
+  "entry": "00_ORIENTATION.md"
 }

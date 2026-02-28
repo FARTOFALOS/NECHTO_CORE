@@ -1,6 +1,6 @@
-"""Allow running NECHTO as `python -m nechto`."""
+"""Module entrypoint for `python -m nechto`."""
 
-from nechto.cli import main
+from .cli import main
 
 
 if __name__ == "__main__":
