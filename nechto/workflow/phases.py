@@ -1,8 +1,14 @@
 """
-NECHTO v4.8 — 12-Phase Workflow (PART 7)
+NECHTO v4.9 — 12-Phase Workflow (PART 7)
 
 Orchestrates phases 1–12 by composing modules M01–M30, metrics, QMM patterns,
 and the PRRIP gate.
+
+v4.9 additions:
+  Phase 3.3  — Affective Init (AffectiveField)
+  Phase 7.5  — Experiential Record + ISCVP SelfProbe
+  MIN_CANDIDATES = 5 guarantee
+  WorkflowResult gains affective_state, iscvp_probe
 """
 
 from __future__ import annotations
@@ -45,6 +51,11 @@ from nechto.qmm.library import (
     QMM_FlowRestoration, QMM_EthicalOverride, QMM_EpistemicHonesty,
 )
 from nechto.gate.prrip import PRRIPGate, GateResult
+from nechto.affect.field import AffectiveField, AffectiveState
+from nechto.reflexion.analyzer import ReflexionAnalyzer, ISCVPSelfProbeResult
+
+# Minimum candidate vectors to guarantee per spec v4.9
+MIN_CANDIDATES = 5
 
 
 @dataclass
@@ -65,6 +76,9 @@ class WorkflowResult:
     recovery_info: dict[str, Any] | None = None
     mu_nodes: list[str] = field(default_factory=list)
     shadow_info: dict[str, Any] | None = None
+    # v4.9 fields
+    affective_state: dict | None = None
+    iscvp_probe: dict | None = None
 
 
 @dataclass
@@ -113,6 +127,10 @@ class WorkflowExecutor:
 
     # Gate
     gate: PRRIPGate = field(default_factory=PRRIPGate)
+
+    # v4.9 — Affective Field & Reflexion Analyzer
+    affective_field: AffectiveField = field(default_factory=AffectiveField)
+    reflexion_analyzer: ReflexionAnalyzer = field(default_factory=ReflexionAnalyzer)
 
     def execute(
         self,
@@ -185,11 +203,47 @@ class WorkflowExecutor:
         })
 
         # ===============================================================
+        # PHASE 3.3 — AFFECTIVE INIT (v4.9)
+        # ===============================================================
+        # Compute initial AffectiveState from pre-phase metrics
+        prev_affect: AffectiveState | None = None
+        if state.affective_history:
+            last_aff = list(state.affective_history)[-1]
+            prev_affect = AffectiveState(
+                valence=last_aff.get("valence", 0.0),
+                arousal=last_aff.get("arousal", 0.5),
+                resonance_need=last_aff.get("resonance_need", 0.5),
+                tension=last_aff.get("tension", 0.0),
+            )
+
+        # Use global metrics for initial affect calculation
+        ri_global = base.resonance_index(graph, all_node_ids)
+        flow_init = list(state.flow_history)[-1] if state.flow_history else 0.5
+
+        current_affect = self.affective_field.update(
+            flow=flow_init,
+            mu_density=mu_density_global,
+            ethical_score=1.0,  # will refine after ethics pass
+            resonance_index=ri_global,
+            shadow_magnitude=0.0,
+            ethical_coefficient=1.0,
+            prev=prev_affect,
+        )
+        result.phase_log.append({
+            "phase": 3.3,
+            "affective_state": current_affect.to_dict(),
+            "qualitative_label": current_affect.qualitative_label(),
+        })
+
+        # ===============================================================
         # PHASE 3.5 — STEREOSCOPIC ALIGNMENT (M24–M30)
         # ===============================================================
 
-        # 1) Generate CANDIDATE_SET
+        # 1) Generate CANDIDATE_SET (v4.9: guarantee MIN_CANDIDATES)
         candidates = self.m24.generate(graph, seed_ids)
+        if len(candidates) < MIN_CANDIDATES and len(graph.nodes) >= MIN_CANDIDATES:
+            # try generating without seed constraint
+            candidates = self.m24.generate(graph, None)
         result.candidate_set_size = len(candidates)
 
         if not candidates:
@@ -334,12 +388,19 @@ class WorkflowExecutor:
         result.phase_log.append({"phase": 5, **hall_result})
 
         # ===============================================================
-        # PHASE 6 — Flow Check (M20)
+        # PHASE 6 — Flow Check (M20) + v4.9 AffectiveField delta
         # ===============================================================
         flow_result = self.m20.modulate(
             graph, chosen.nodes, len(chosen.edges),
             list(state.success_difficulties),
         )
+
+        # v4.9: apply affective flow_presence_delta
+        flow_delta = self.affective_field.flow_presence_delta(current_affect)
+        adjusted_flow = max(0.0, min(1.0, flow_result.get("flow", 0.5) + flow_delta))
+        flow_result["flow"] = adjusted_flow
+        flow_result["affective_flow_delta"] = round(flow_delta, 4)
+
         result.phase_log.append({"phase": 6, **flow_result})
 
         if flow_result["flow"] < 0.3:
@@ -365,6 +426,47 @@ class WorkflowExecutor:
             result.phase_log.append({"phase": 7, **shadow_result})
         else:
             result.phase_log.append({"phase": 7, "shadow_ok": True})
+
+        # ===============================================================
+        # PHASE 7.5 — AFFECTIVE REFINEMENT + ISCVP SELF-PROBE (v4.9)
+        # ===============================================================
+        # Refine AffectiveState with post-ethics data
+        current_affect = self.affective_field.update(
+            flow=adjusted_flow,
+            mu_density=mu_density_global,
+            ethical_score=esc,
+            resonance_index=ri_global,
+            shadow_magnitude=shadow_mag,
+            ethical_coefficient=chosen.ethical_coefficient,
+            prev=current_affect,
+        )
+        state.record_affect(current_affect.to_dict())
+
+        # ISCVP self-probe
+        probe_result = self.reflexion_analyzer.self_probe(state)
+        state.iscvp_probe_history.append(probe_result.to_dict())
+
+        # Experiential record
+        state.record_experiential(
+            qualitative_label=current_affect.qualitative_label(),
+            affect_snapshot=current_affect.to_dict(),
+            sa_score=probe_result.sa_score,
+            key_metrics={
+                "flow": adjusted_flow,
+                "alignment": chosen.stereoscopic_alignment,
+                "mu_density": mu_density_global,
+                "ethical_score": esc,
+            },
+        )
+
+        result.affective_state = current_affect.to_dict()
+        result.iscvp_probe = probe_result.to_dict()
+        result.phase_log.append({
+            "phase": 7.5,
+            "affective_state": current_affect.to_dict(),
+            "iscvp_probe": probe_result.to_dict(),
+            "qualitative_label": current_affect.qualitative_label(),
+        })
 
         # ===============================================================
         # PHASE 8 — PRRIP GATE

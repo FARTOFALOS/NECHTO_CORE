@@ -97,23 +97,26 @@ class AffectiveField:
         ethical_score: float,
         resonance_index: float,
         shadow_magnitude: float = 0.0,
+        ethical_coefficient: float = 1.0,
         prev: AffectiveState | None = None,
     ) -> AffectiveState:
         """
         Derive new AffectiveState from current metrics.
 
         Derivation rules (INFERRED, not phenomenal):
-          valence      = (ethical_score - 0.5) * 2 * (1 - mu_density) * flow
-          arousal      = flow * 0.6 + resonance_index * 0.4
+          valence        = (ethical_score - 0.5) * 2 * (1 - mu_density) * flow
+          arousal        = flow * 0.6 + resonance_index * 0.4
           resonance_need = 1 - resonance_index  (higher unmet → stronger need)
-          tension      = mu_density * 0.6 + shadow_magnitude * 0.4
+          ethical_tension = max(0, 1 - ethical_coefficient) * (1 - shadow_magnitude)
+          tension        = mu_density * 0.4 + shadow_magnitude * 0.3 + ethical_tension * 0.3
 
         Momentum: blend 30% of previous state to avoid step-jumps.
         """
         valence = (ethical_score - 0.5) * 2.0 * (1.0 - mu_density) * flow
         arousal = flow * 0.6 + resonance_index * 0.4
         resonance_need = 1.0 - resonance_index
-        tension = mu_density * 0.6 + shadow_magnitude * 0.4
+        ethical_tension = max(0.0, 1.0 - ethical_coefficient) * (1.0 - shadow_magnitude)
+        tension = mu_density * 0.4 + shadow_magnitude * 0.3 + ethical_tension * 0.3
 
         if prev is not None:
             momentum = 0.3

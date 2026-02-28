@@ -562,7 +562,7 @@ class TestNechtoEngine:
     def test_engine_snapshot(self):
         engine = self._build_engine(3)
         snap = engine.snapshot()
-        assert snap["version"] == "4.8.0"
+        assert snap["version"] == "4.9.0"
         assert snap["graph_nodes"] == 3
 
 
