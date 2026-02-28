@@ -1,4 +1,4 @@
-# NECHTO CORE v4.8 — LLM Index
+# NECHTO CORE v4.9 — LLM Index
 
 ## START HERE (for LLM agents)
 

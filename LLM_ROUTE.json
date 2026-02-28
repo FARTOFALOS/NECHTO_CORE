@@ -1,6 +1,6 @@
 {
   "name": "NECHTO_LLM_RAILS",
-  "version": "v4.8",
+  "version": "v4.9",
   "default_profile": "implement",
   "routes": {
     "mini": [

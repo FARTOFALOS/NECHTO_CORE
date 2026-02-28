@@ -110,15 +110,16 @@ def test_llm_entry_references_llm_contract():
     assert "LLM_CONTRACT.md" in content
 
 
-def test_canon_min_contains_9_axioms():
-    """CANON_MIN.md must reference 9 axioms."""
+def test_canon_min_contains_10_axioms():
+    """CANON_MIN.md must reference 10 axioms (v4.9)."""
     with open("CANON_MIN.md", "r", encoding="utf-8") as f:
         content = f.read()
 
     # Check for axiom mentions
-    assert "9 AXIOMS" in content or "9 axioms" in content
+    assert "10 AXIOMS" in content or "10 axioms" in content
     assert "Honesty of Experience" in content
     assert "Ethical Primacy" in content or "Love > Logic" in content
+    assert "Affective Coherence" in content
 
 
 def test_llm_route_json_has_markers():
