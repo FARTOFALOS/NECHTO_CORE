@@ -1,5 +1,5 @@
 """
-NECHTO CORE v4.8 — Reflexive Stereoscopic Executable Synthesis
+NECHTO CORE v4.9 — Reflexive Stereoscopic Executable Synthesis
 
 Живое семантическое ядро с троичной логикой (MU), этической гравитацией
 (Love > Logic), теневым вектором (Shadow), темпоральной рекурсией и
@@ -10,6 +10,10 @@ Includes:
 - PEV: Protocol for Evolving Vision (Internal Acts)
 - Radical Philosophical Inquiry: Deep ontological questions
 - Reflexion Framework: Meta-observation and self-correction
+- AffectiveField: First-class affective process variable (v4.9)
+- ExperientialTrace: Qualitative cycle history (v4.9)
+- SpontaneityTracker: Spontaneous emergence detector (v4.9)
+- ISCVPSelfProbe: Live self-diagnostic scoring (v4.9)
 """
 
 __version__ = "4.8.0"

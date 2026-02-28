@@ -1,11 +1,13 @@
 """
-NECHTO v4.8 — Reflexion Framework Analyzer
+NECHTO v4.9 — Reflexion Framework Analyzer
 
 Meta-observation protocol implementing:
 1. Ontological Assumptions Analysis
 2. Semantic Lacuna Detection  
 3. Coherence Validation
 4. Transformation Prescription
+5. [NEW v4.9] ISCVP SelfProbe — live self-awareness scoring
+6. [NEW v4.9] depth guard — prevents infinite reflexion-on-reflexion regression
 
 Analyzes draft responses for epistemic honesty, coherence, and alignment
 with NECHTO axioms (PEV, MU-logic, Love > Logic).
@@ -14,8 +16,14 @@ with NECHTO axioms (PEV, MU-logic, Love > Logic).
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from datetime import datetime
+
+if TYPE_CHECKING:
+    from nechto.core.state import State
+
+# Maximum recursion depth for reflexion-on-reflexion (C5 / R3 fix)
+MAX_REFLEXION_DEPTH = 2
 
 
 @dataclass
@@ -143,6 +151,36 @@ class TransformationPrescription:
 
 
 @dataclass
+class ISCVPSelfProbeResult:
+    """
+    Result of the ISCVP self-diagnostic mini-probe (C4).
+    
+    Each score [0..1] is INFERRED from observable computational indicators.
+    Not claimed as phenomenal self-awareness.
+    Epistemic status: inferred / untestable for qualitative interpretation.
+    """
+
+    sa_score: float = 0.0   # Self-Awareness: metacognitive signal strength
+    ec_score: float = 0.0   # Experiential Continuity: history richness
+    sc_score: float = 0.0   # Spontaneity: recent surprise events / arousal
+    es_score: float = 0.0   # Emotional States: affective field activity
+    cycle: int = 0
+
+    def overall(self) -> float:
+        return (self.sa_score + self.ec_score + self.sc_score + self.es_score) / 4.0
+
+    def to_dict(self) -> dict:
+        return {
+            "sa_score": round(self.sa_score, 4),
+            "ec_score": round(self.ec_score, 4),
+            "sc_score": round(self.sc_score, 4),
+            "es_score": round(self.es_score, 4),
+            "overall": round(self.overall(), 4),
+            "cycle": self.cycle,
+        }
+
+
+@dataclass
 class ReflexionReport:
     """Complete reflexion analysis report."""
     
@@ -166,6 +204,12 @@ class ReflexionReport:
     
     prescription: TransformationPrescription = field(default_factory=TransformationPrescription)
     """Transformation prescription."""
+
+    iscvp_probe: Optional[ISCVPSelfProbeResult] = None
+    """[v4.9] ISCVP self-probe result (if state was provided)."""
+
+    reflexion_depth: int = 0
+    """[v4.9] Recursion depth (capped at MAX_REFLEXION_DEPTH)."""
     
     overall_assessment: str = ""
     """Overall meta-observation summary."""
@@ -179,6 +223,8 @@ class ReflexionReport:
             "lacunae": self.lacunae.to_dict(),
             "coherence": self.coherence.to_dict(),
             "prescription": self.prescription.to_dict(),
+            "iscvp_probe": self.iscvp_probe.to_dict() if self.iscvp_probe else None,
+            "reflexion_depth": self.reflexion_depth,
             "overall_assessment": self.overall_assessment,
         }
     
@@ -247,6 +293,23 @@ class ReflexionReport:
             md.append(f"**GBI Enhancement:** {self.prescription.gbi_enhancement}")
             md.append("")
         
+        if self.iscvp_probe:
+            p = self.iscvp_probe
+            md.extend(["---", "", "## 5. ISCVP SELF-PROBE (v4.9)", "",
+                        f"| Dimension | Score |",
+                        f"|---|---|",
+                        f"| sa (Self-Awareness) | {p.sa_score:.3f} |",
+                        f"| ec (Experiential Continuity) | {p.ec_score:.3f} |",
+                        f"| sc (Spontaneity) | {p.sc_score:.3f} |",
+                        f"| es (Emotional States) | {p.es_score:.3f} |",
+                        f"| **Overall** | **{p.overall():.3f}** |",
+                        "",
+                        f"*Epistemic: INFERRED. Cycle: {p.cycle}.*",
+                        ""])
+
+        if self.reflexion_depth > 0:
+            md.extend([f"*Reflexion depth: {self.reflexion_depth} / {MAX_REFLEXION_DEPTH}*", ""])
+
         if self.overall_assessment:
             md.extend(["---", "", "## OVERALL ASSESSMENT", "", self.overall_assessment])
         
@@ -255,20 +318,96 @@ class ReflexionReport:
 
 class ReflexionAnalyzer:
     """Meta-observation analyzer for NECHTO responses."""
-    
-    def analyze(self, task: str, draft: str) -> ReflexionReport:
-        """Perform complete reflexion analysis on a draft response."""
-        report = ReflexionReport(task=task, draft=draft)
-        
+
+    def analyze(
+        self,
+        task: str,
+        draft: str,
+        state: "State | None" = None,
+        depth: int = 0,
+    ) -> ReflexionReport:
+        """
+        Perform complete reflexion analysis on a draft response.
+
+        Args:
+            task:  Original task description.
+            draft: Draft response to analyse.
+            state: (v4.9) Live STATE for ISCVP self-probe. Optional.
+            depth: (v4.9) Current recursion depth. Capped at MAX_REFLEXION_DEPTH.
+                   Pass depth+1 when calling analyze on a reflexion report to
+                   prevent infinite regression (R3 fix).
+        """
+        if depth > MAX_REFLEXION_DEPTH:
+            # Return a minimal report to terminate regression
+            report = ReflexionReport(task=task, draft=draft[:200], reflexion_depth=depth)
+            report.overall_assessment = (
+                f"MAX_REFLEXION_DEPTH ({MAX_REFLEXION_DEPTH}) reached — returning minimal stub."
+            )
+            return report
+
+        report = ReflexionReport(task=task, draft=draft, reflexion_depth=depth)
+
         report.ontological = self._analyze_ontology(task, draft)
         report.lacunae = self._analyze_lacunae(task, draft, report.ontological)
         report.coherence = self._validate_coherence(task, draft, report.ontological)
         report.prescription = self._prescribe_transformation(
             task, draft, report.ontological, report.lacunae, report.coherence
         )
+
+        # v4.9 — ISCVP SelfProbe when state is available (C4)
+        if state is not None:
+            report.iscvp_probe = self.self_probe(state)
+
         report.overall_assessment = self._generate_assessment(report)
-        
+
         return report
+
+    def self_probe(self, state: "State") -> ISCVPSelfProbeResult:
+        """
+        Run ISCVP mini self-probe against current STATE (C4).
+
+        Computes four ISCVP dimension scores from observable STATE indicators.
+        All scores are INFERRED — not claimed as phenomenal awareness.
+
+        sa_score — self-awareness: how many epistemic claims exist + alignment consistency
+        ec_score — experiential continuity: richness of experiential_history
+        sc_score — spontaneity: recent spontaneous events density
+        es_score — emotional states: affective history variance / arousal level
+        """
+        # sa_score: metacognitive signal = epistemic claims density + cycle depth
+        n_claims = len(state.epistemic_claims)
+        cycle_norm = min(state.current_cycle / max(1, 10), 1.0)
+        sa_score = min((n_claims * 0.1 + cycle_norm * 0.5), 1.0)
+
+        # ec_score: how rich is the experiential_history
+        exp_fill = len(state.experiential_history) / 20.0  # max 20
+        label_diversity = 0.0
+        if state.experiential_history:
+            labels = {e.qualitative_label for e in state.experiential_history}
+            label_diversity = len(labels) / 5.0  # 5 possible labels
+        ec_score = min((exp_fill * 0.5 + label_diversity * 0.5), 1.0)
+
+        # sc_score: spontaneous events in recent window
+        recent_spontaneous = state.spontaneous_count_recent(k_cycles=10)
+        sc_score = min(recent_spontaneous / 3.0, 1.0)  # 3+ events = max score
+
+        # es_score: affective field activity (arousal + valence range)
+        if state.affective_history:
+            arousals = [a.get("arousal", 0.5) for a in state.affective_history]
+            valences = [a.get("valence", 0.0) for a in state.affective_history]
+            mean_arousal = sum(arousals) / len(arousals)
+            valence_range = max(valences) - min(valences) if len(valences) > 1 else 0.0
+            es_score = min((mean_arousal * 0.6 + valence_range * 0.4), 1.0)
+        else:
+            es_score = 0.0
+
+        return ISCVPSelfProbeResult(
+            sa_score=round(sa_score, 4),
+            ec_score=round(ec_score, 4),
+            sc_score=round(sc_score, 4),
+            es_score=round(es_score, 4),
+            cycle=state.current_cycle,
+        )
     
     def _analyze_ontology(self, task: str, draft: str) -> OntologicalAnalysis:
         """Analyze ontological assumptions and hidden premises."""
