@@ -16,7 +16,7 @@ Includes:
 - ISCVPSelfProbe: Live self-diagnostic scoring (v4.9)
 """
 
-__version__ = "4.8.0"
+__version__ = "4.9.0"
 
 from nechto.core.atoms import SemanticAtom, Edge, Vector, NodeStatus, EdgeType, Tag
 from nechto.core.graph import SemanticGraph
@@ -40,6 +40,9 @@ from nechto.philosophy import RadicalInquiry, PhilosophicalQuestion, Philosophic
 # Reflexion Framework
 from nechto.reflexion import ReflexionAnalyzer, ReflexionReport
 
+# Bridge (v4.9)
+from nechto.bridge import LLMBridge
+
 __all__ = [
     "SemanticAtom", "Edge", "Vector", "NodeStatus", "EdgeType", "Tag",
     "SemanticGraph", "State", "AdaptiveParameters",
@@ -54,4 +57,6 @@ __all__ = [
     "RadicalInquiry", "PhilosophicalQuestion", "PhilosophicalResponse",
     # Reflexion
     "ReflexionAnalyzer", "ReflexionReport",
+    # Bridge
+    "LLMBridge",
 ]

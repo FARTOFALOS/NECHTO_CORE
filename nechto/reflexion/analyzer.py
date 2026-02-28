@@ -21,6 +21,7 @@ from datetime import datetime
 
 if TYPE_CHECKING:
     from nechto.core.state import State
+    from nechto.core.graph import SemanticGraph
 
 # Maximum recursion depth for reflexion-on-reflexion (C5 / R3 fix)
 MAX_REFLEXION_DEPTH = 2
@@ -324,6 +325,7 @@ class ReflexionAnalyzer:
         task: str,
         draft: str,
         state: "State | None" = None,
+        graph: "SemanticGraph | None" = None,
         depth: int = 0,
     ) -> ReflexionReport:
         """
@@ -333,6 +335,7 @@ class ReflexionAnalyzer:
             task:  Original task description.
             draft: Draft response to analyse.
             state: (v4.9) Live STATE for ISCVP self-probe. Optional.
+            graph: (v4.9) SemanticGraph for structural analysis. Optional.
             depth: (v4.9) Current recursion depth. Capped at MAX_REFLEXION_DEPTH.
                    Pass depth+1 when calling analyze on a reflexion report to
                    prevent infinite regression (R3 fix).
@@ -347,8 +350,8 @@ class ReflexionAnalyzer:
 
         report = ReflexionReport(task=task, draft=draft, reflexion_depth=depth)
 
-        report.ontological = self._analyze_ontology(task, draft)
-        report.lacunae = self._analyze_lacunae(task, draft, report.ontological)
+        report.ontological = self._analyze_ontology(task, draft, graph)
+        report.lacunae = self._analyze_lacunae(task, draft, report.ontological, graph)
         report.coherence = self._validate_coherence(task, draft, report.ontological)
         report.prescription = self._prescribe_transformation(
             task, draft, report.ontological, report.lacunae, report.coherence
@@ -409,7 +412,7 @@ class ReflexionAnalyzer:
             cycle=state.current_cycle,
         )
     
-    def _analyze_ontology(self, task: str, draft: str) -> OntologicalAnalysis:
+    def _analyze_ontology(self, task: str, draft: str, graph: "SemanticGraph | None" = None) -> OntologicalAnalysis:
         """Analyze ontological assumptions and hidden premises."""
         analysis = OntologicalAnalysis()
         
@@ -418,6 +421,27 @@ class ReflexionAnalyzer:
             analysis.hidden_assumptions.append("assumes binary logic")
         if "потому что" in draft.lower() or "because" in draft.lower():
             analysis.hidden_assumptions.append("assumes linear causality")
+        
+        # v4.9 — graph-based: check for MUTEX edges implying binary thinking
+        if graph is not None:
+            from nechto.core.atoms import EdgeType
+            mutex_count = sum(
+                1 for e in graph.edges if e.type == EdgeType.MUTEX
+            )
+            if mutex_count > len(graph.nodes) * 0.3:
+                analysis.hidden_assumptions.append(
+                    f"high MUTEX density ({mutex_count}) suggests binary opposition framing"
+                )
+            # Check for disconnected clusters (fragmented ontology)
+            connected_nodes = set()
+            for e in graph.edges:
+                connected_nodes.add(e.from_id)
+                connected_nodes.add(e.to_id)
+            isolated = set(graph.nodes.keys()) - connected_nodes
+            if isolated and len(isolated) > 1:
+                analysis.hidden_assumptions.append(
+                    f"{len(isolated)} isolated nodes — potential ontological fragmentation"
+                )
         
         # Check PEV axiom compatibility
         analysis.pev_compatibility["Honesty of Experience"] = "MU" in draft or "не знаю" in draft.lower()
@@ -436,7 +460,7 @@ class ReflexionAnalyzer:
         
         return analysis
     
-    def _analyze_lacunae(self, task: str, draft: str, ont: OntologicalAnalysis) -> SemanticLacunaAnalysis:
+    def _analyze_lacunae(self, task: str, draft: str, ont: OntologicalAnalysis, graph: "SemanticGraph | None" = None) -> SemanticLacunaAnalysis:
         """Identify missing semantic contours."""
         analysis = SemanticLacunaAnalysis()
         
@@ -453,6 +477,31 @@ class ReflexionAnalyzer:
         for qmm in ["PRESENCE", "COHERENCE", "RESONANCE", "EMERGENCE"]:
             if qmm.lower() not in draft.lower():
                 analysis.unused_semantic_nodes.append(qmm)
+
+        # v4.9 — graph-based lacunae detection
+        if graph is not None:
+            from nechto.core.atoms import NodeStatus, EdgeType
+            # Detect shadow nodes not integrated (high shadow axis value)
+            shadow_nodes = [
+                n for n in graph.nodes.values()
+                if n.shadow > 0.5 and n.label.lower() not in draft.lower()
+            ]
+            if shadow_nodes:
+                analysis.missing_aspects.append(
+                    f"{len(shadow_nodes)} shadow node(s) unaddressed: "
+                    + ", ".join(n.label for n in shadow_nodes[:3])
+                )
+            # Detect nodes with high resonance but not mentioned
+            bright_nodes = [
+                n for n in graph.nodes.values()
+                if n.status == NodeStatus.ANCHORED
+                and n.identity_alignment > 0.7
+                and n.label.lower() not in draft.lower()
+            ]
+            if bright_nodes:
+                analysis.unexpressed_potentials.extend(
+                    n.label for n in bright_nodes[:3]
+                )
         
         analysis.sq_impact_estimate = min(len(analysis.identified_lacunae) * 0.1 + len(analysis.missing_aspects) * 0.15, 1.0)
         
