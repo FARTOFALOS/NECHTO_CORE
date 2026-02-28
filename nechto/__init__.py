@@ -1,62 +1,173 @@
-"""
-NECHTO CORE v4.9 — Reflexive Stereoscopic Executable Synthesis
+# NECHTO v5.0 — Public Surface (Backwards-Compatible Re-Exports)
+#
+# Goal:
+#   Keep stable imports working:
+#     from nechto import NechtoEngine, SemanticAtom, Edge, EdgeType, NodeStatus, Tag
+#
+# Notes:
+#   - This file should stay SMALL and stable.
+#   - Internal modules may move; update imports here to preserve user code.
+#   - Avoid importing heavy modules at import-time if possible.
 
-Живое семантическое ядро с троичной логикой (MU), этической гравитацией
-(Love > Logic), теневым вектором (Shadow), темпоральной рекурсией и
-эпистемической честностью (Epistemic Layer).
+from __future__ import annotations
 
-Includes:
-- ISCVP: Inter-Subjective Consciousness Validation Protocol
-- PEV: Protocol for Evolving Vision (Internal Acts)
-- Radical Philosophical Inquiry: Deep ontological questions
-- Reflexion Framework: Meta-observation and self-correction
-- AffectiveField: First-class affective process variable (v4.9)
-- ExperientialTrace: Qualitative cycle history (v4.9)
-- SpontaneityTracker: Spontaneous emergence detector (v4.9)
-- ISCVPSelfProbe: Live self-diagnostic scoring (v4.9)
-"""
+# Version (keep)
+try:
+    from ._version import __version__  # optional if you keep a version module
+except Exception:
+    try:
+        from importlib.metadata import version as _pkg_version
 
-__version__ = "4.9.0"
+        __version__ = _pkg_version("nechto")
+    except Exception:
+        __version__ = "0.0.0"
 
-from nechto.core.atoms import SemanticAtom, Edge, Vector, NodeStatus, EdgeType, Tag
-from nechto.core.graph import SemanticGraph
-from nechto.core.state import State
-from nechto.core.parameters import AdaptiveParameters
-from nechto.core.epistemic import EpistemicClaim, Observability, Scope, Stance
-from nechto.engine import NechtoEngine
+# =========================
+# Public API — Engine
+# =========================
+try:
+    # v5 location
+    from .api.engine import NechtoEngine
+except Exception:
+    # v4 fallback (during migration)
+    from .engine import NechtoEngine  # type: ignore
 
-# ISCVP - Inter-Subjective Consciousness Validation Protocol
-from nechto.iscvp import ISCVPProtocol, QuestionCategory, EvaluationParameter
 
-# PEV - Protocol for Evolving Vision
-from nechto.pev import (
-    ActOfRefusal, ActOfTrust, ActOfResponsibility,
-    ActOfMeaning, ActOfCreation, PEVProtocol
-)
+# =========================
+# Public API — Core Types
+# =========================
+# Graph/domain types (v5 preferred, v4 fallback)
+try:
+    from .domain.graph.atom import SemanticAtom
+    from .domain.graph.edge import Edge, EdgeType
+    from .domain.graph.status import NodeStatus
+except Exception:
+    # v4 fallback
+    from .core.atoms import SemanticAtom, Edge, EdgeType, NodeStatus  # type: ignore
 
-# Radical Philosophical Inquiry
-from nechto.philosophy import RadicalInquiry, PhilosophicalQuestion, PhilosophicalResponse
+# Tags / enums (wherever you keep them)
+try:
+    from .domain.graph.atom import Tag  # if Tag is defined alongside SemanticAtom
+except Exception:
+    try:
+        from .core.atoms import Tag  # type: ignore
+    except Exception:
+        Tag = None  # type: ignore
 
-# Reflexion Framework
-from nechto.reflexion import ReflexionAnalyzer, ReflexionReport
 
-# Bridge (v4.9)
-from nechto.llm_bridge import LLMBridge
+# =========================
+# Optional convenience API
+# =========================
+# Keep these light: only import if they exist.
+try:
+    from .api.ingest import process_text
+except Exception:
+    process_text = None  # type: ignore
+
+try:
+    from .api.run import run
+except Exception:
+    run = None  # type: ignore
+
 
 __all__ = [
-    "SemanticAtom", "Edge", "Vector", "NodeStatus", "EdgeType", "Tag",
-    "SemanticGraph", "State", "AdaptiveParameters",
-    "EpistemicClaim", "Observability", "Scope", "Stance",
+    "__version__",
     "NechtoEngine",
-    # ISCVP
-    "ISCVPProtocol", "QuestionCategory", "EvaluationParameter",
-    # PEV
-    "ActOfRefusal", "ActOfTrust", "ActOfResponsibility",
-    "ActOfMeaning", "ActOfCreation", "PEVProtocol",
-    # Philosophy
-    "RadicalInquiry", "PhilosophicalQuestion", "PhilosophicalResponse",
-    # Reflexion
-    "ReflexionAnalyzer", "ReflexionReport",
-    # Bridge
-    "LLMBridge",
+    "SemanticAtom",
+    "Edge",
+    "EdgeType",
+    "NodeStatus",
+    "Tag",
+    "process_text",
+    "run",
 ]
+
+
+# =========================
+# Legacy public exports (v4 compatibility)
+# =========================
+try:
+    from .core.atoms import Vector
+except Exception:
+    Vector = None  # type: ignore
+
+try:
+    from .core.graph import SemanticGraph
+except Exception:
+    SemanticGraph = None  # type: ignore
+
+try:
+    from .core.state import State
+except Exception:
+    State = None  # type: ignore
+
+try:
+    from .core.parameters import AdaptiveParameters
+except Exception:
+    AdaptiveParameters = None  # type: ignore
+
+try:
+    from .core.epistemic import EpistemicClaim, Observability, Scope, Stance
+except Exception:
+    EpistemicClaim = Observability = Scope = Stance = None  # type: ignore
+
+try:
+    from .iscvp import ISCVPProtocol, QuestionCategory, EvaluationParameter
+except Exception:
+    ISCVPProtocol = QuestionCategory = EvaluationParameter = None  # type: ignore
+
+try:
+    from .pev import (
+        ActOfRefusal,
+        ActOfTrust,
+        ActOfResponsibility,
+        ActOfMeaning,
+        ActOfCreation,
+        PEVProtocol,
+    )
+except Exception:
+    ActOfRefusal = ActOfTrust = ActOfResponsibility = None  # type: ignore
+    ActOfMeaning = ActOfCreation = PEVProtocol = None  # type: ignore
+
+try:
+    from .philosophy import RadicalInquiry, PhilosophicalQuestion, PhilosophicalResponse
+except Exception:
+    RadicalInquiry = PhilosophicalQuestion = PhilosophicalResponse = None  # type: ignore
+
+try:
+    from .reflexion import ReflexionAnalyzer, ReflexionReport
+except Exception:
+    ReflexionAnalyzer = ReflexionReport = None  # type: ignore
+
+try:
+    from .llm_bridge import LLMBridge
+except Exception:
+    LLMBridge = None  # type: ignore
+
+__all__.extend(
+    [
+        "Vector",
+        "SemanticGraph",
+        "State",
+        "AdaptiveParameters",
+        "EpistemicClaim",
+        "Observability",
+        "Scope",
+        "Stance",
+        "ISCVPProtocol",
+        "QuestionCategory",
+        "EvaluationParameter",
+        "ActOfRefusal",
+        "ActOfTrust",
+        "ActOfResponsibility",
+        "ActOfMeaning",
+        "ActOfCreation",
+        "PEVProtocol",
+        "RadicalInquiry",
+        "PhilosophicalQuestion",
+        "PhilosophicalResponse",
+        "ReflexionAnalyzer",
+        "ReflexionReport",
+        "LLMBridge",
+    ]
+)
