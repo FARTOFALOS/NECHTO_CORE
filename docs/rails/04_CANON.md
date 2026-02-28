@@ -122,4 +122,4 @@ Ethics = harm_penalty × identity_alignment
 
 ## NEXT
 
-→ [docs/rails/05_ACTIVATION.md](docs/rails/05_ACTIVATION.md)
+NEXT: docs/rails/05_ACTIVATION.md

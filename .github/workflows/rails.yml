@@ -1,30 +1,20 @@
 name: LLM Rails Integrity
 
 on:
-  push:
-    paths:
-      - "00_ORIENTATION.md"
-      - "01_AXIOMS.md"
-      - "02_CONTRACT.md"
-      - "03_CALIBRATION.md"
-      - "04_CANON.md"
-      - "05_ACTIVATION.md"
-      - "LLM_ROUTE.json"
-      - "llms.txt"
   pull_request:
-    paths:
-      - "00_ORIENTATION.md"
-      - "01_AXIOMS.md"
-      - "02_CONTRACT.md"
-      - "03_CALIBRATION.md"
-      - "04_CANON.md"
-      - "05_ACTIVATION.md"
-      - "LLM_ROUTE.json"
-      - "llms.txt"
+  push:
+    branches: [ "main" ]
 
 jobs:
   rails:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: python -m pytest -q tests/test_llm_rails.py
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run rails integrity checks
+        run: |
+          python scripts/check_rails.py

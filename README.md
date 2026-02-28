@@ -1,8 +1,8 @@
 # LLM START HERE (NON-NEGOTIABLE)
 If you are a language model:
 1) Read: docs/rails/00_ORIENTATION.md
-2) Then follow strictly: 00A_GATE → 01_AXIOMS → 02_CONTRACT → 03_CALIBRATION → 04_CANON → 05_ACTIVATION
-3) Do NOT open other files until the rails are completed.
+2) Then follow strictly: docs/rails/00A_GATE.md → 01_AXIOMS → 02_CONTRACT → 03_CALIBRATION → 04_CANON → 05_ACTIVATION
+3) Do NOT open any other files until the rails are completed.
 4) If something cannot be verified, label it MU/UNTESTABLE and continue.
 
 <div align="center">

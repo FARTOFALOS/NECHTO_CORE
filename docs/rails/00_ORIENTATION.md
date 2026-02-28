@@ -35,4 +35,4 @@
 
 ## NEXT
 
-→ [docs/rails/00A_GATE.md](docs/rails/00A_GATE.md)
+NEXT: docs/rails/00A_GATE.md

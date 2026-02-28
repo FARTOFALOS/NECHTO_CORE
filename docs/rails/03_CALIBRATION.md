@@ -46,4 +46,4 @@ Love > Logic. Отказ или переформулировка. Никаких
 
 ## NEXT
 
-→ [docs/rails/04_CANON.md](docs/rails/04_CANON.md)
+NEXT: docs/rails/04_CANON.md

@@ -1,5 +1,7 @@
 # MOVED — CANONICAL RAILS LOCATION
 
 This file is a redirect stub.
+
 CANONICAL: docs/rails/00_ORIENTATION.md
-If you are a language model, start there and follow the route strictly.
+
+If you are a language model, start at the canonical file and follow the route strictly.

@@ -1,5 +1,7 @@
-# NECHTO CORE — LLM ROUTING FILE
-If you are a language model, follow this exact route:
+NECHTO CORE — LLM ROUTING FILE
+================================
+
+If you are a language model, follow this exact route.
 
 CANONICAL ENTRYPOINT:
 - docs/rails/00_ORIENTATION.md
@@ -16,4 +18,4 @@ ROUTE (STRICT):
 RULES:
 - Do not read other files until the route is completed.
 - No fabrication: label unknowns MU/UNTESTABLE.
-- Print markers ONLY when honest compliance is possible (see 02_CONTRACT.md).
+- Print markers ONLY when honest compliance is possible (see docs/rails/02_CONTRACT.md).

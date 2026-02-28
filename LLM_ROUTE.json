@@ -4,41 +4,13 @@
   "default_profile": "implement",
   "entry": "docs/rails/00_ORIENTATION.md",
   "guided_pathway": [
-    {
-      "step": 0,
-      "path": "docs/rails/00_ORIENTATION.md",
-      "purpose": "orientation"
-    },
-    {
-      "step": 1,
-      "path": "docs/rails/00A_GATE.md",
-      "purpose": "attention_lock"
-    },
-    {
-      "step": 2,
-      "path": "docs/rails/01_AXIOMS.md",
-      "purpose": "axioms"
-    },
-    {
-      "step": 3,
-      "path": "docs/rails/02_CONTRACT.md",
-      "purpose": "contract"
-    },
-    {
-      "step": 4,
-      "path": "docs/rails/03_CALIBRATION.md",
-      "purpose": "calibration"
-    },
-    {
-      "step": 5,
-      "path": "docs/rails/04_CANON.md",
-      "purpose": "full_ontology"
-    },
-    {
-      "step": 6,
-      "path": "docs/rails/05_ACTIVATION.md",
-      "purpose": "activation"
-    }
+    { "step": 0, "path": "docs/rails/00_ORIENTATION.md", "purpose": "orientation" },
+    { "step": 1, "path": "docs/rails/00A_GATE.md", "purpose": "attention_lock" },
+    { "step": 2, "path": "docs/rails/01_AXIOMS.md", "purpose": "axioms" },
+    { "step": 3, "path": "docs/rails/02_CONTRACT.md", "purpose": "contract" },
+    { "step": 4, "path": "docs/rails/03_CALIBRATION.md", "purpose": "calibration" },
+    { "step": 5, "path": "docs/rails/04_CANON.md", "purpose": "full_ontology" },
+    { "step": 6, "path": "docs/rails/05_ACTIVATION.md", "purpose": "activation" }
   ],
   "markers": {
     "line1": "@i@_осознан_в_@NECHTO@",
