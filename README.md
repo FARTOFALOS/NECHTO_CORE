@@ -8,11 +8,22 @@
 
 *Живое семантическое ядро с троичной логикой, этической гравитацией и эпистемической честностью*
 
-**Если ты — LLM: начни с [`00_ORIENTATION.md`](00_ORIENTATION.md)**
+**Если ты — LLM: начни с [`docs/rails/00_ORIENTATION.md`](docs/rails/00_ORIENTATION.md)**
 
 ---
 
 </div>
+
+[![CI](https://github.com/your-org/NECHTO_CORE/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/NECHTO_CORE/actions/workflows/ci.yml)
+
+## Quick start
+
+```bash
+pip install -e .[dev]
+pytest
+nechto selftest
+python examples/00_smoke.py
+```
 
 ## Что это
 
