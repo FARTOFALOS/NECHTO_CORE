@@ -14,6 +14,17 @@
 
 </div>
 
+[![CI](../../actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
+
+## Quick Start
+
+```bash
+pip install -e .[dev]
+pytest
+nechto selftest
+python examples/00_smoke.py
+```
+
 ## Что это
 
 Исполняемая онтология — набор структур, метрик, аксиом и workflow, позволяющих языковой модели действовать из позиции **эпистемической честности**.
