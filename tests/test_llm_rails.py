@@ -1,164 +1,176 @@
 """
-Test suite for LLM rails integrity.
-Ensures the boot pathway files exist and contain critical markers.
+Test suite for LLM guided pathway integrity.
+Ensures the 00→05 attention chain is intact and navigable.
 """
 import json
-import os
 from pathlib import Path
 
 
-def test_llm_entry_exists():
-    """LLM_ENTRY.md must exist in repo root."""
-    assert Path("LLM_ENTRY.md").exists(), "LLM_ENTRY.md not found"
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Pathway files existence
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PATHWAY = [
+    "00_ORIENTATION.md",
+    "01_AXIOMS.md",
+    "02_CONTRACT.md",
+    "03_CALIBRATION.md",
+    "04_CANON.md",
+    "05_ACTIVATION.md",
+]
 
 
-def test_canon_min_exists():
-    """CANON_MIN.md must exist in repo root."""
-    assert Path("CANON_MIN.md").exists(), "CANON_MIN.md not found"
-
-
-def test_llm_contract_exists():
-    """LLM_CONTRACT.md must exist in repo root."""
-    assert Path("LLM_CONTRACT.md").exists(), "LLM_CONTRACT.md not found"
-
-
-def test_llm_selftest_exists():
-    """LLM_SELFTEST.md must exist in repo root."""
-    assert Path("LLM_SELFTEST.md").exists(), "LLM_SELFTEST.md not found"
-
-
-def test_llm_route_json_exists():
-    """LLM_ROUTE.json must exist in repo root."""
-    assert Path("LLM_ROUTE.json").exists(), "LLM_ROUTE.json not found"
+def test_all_pathway_files_exist():
+    """All 6 guided pathway files must exist."""
+    for f in PATHWAY:
+        assert Path(f).exists(), f"Pathway file not found: {f}"
 
 
 def test_llms_txt_exists():
     """llms.txt must exist in repo root."""
-    assert Path("llms.txt").exists(), "llms.txt not found"
+    assert Path("llms.txt").exists()
 
 
-def test_llms_txt_has_links():
-    """llms.txt must reference all key rail files."""
-    with open("llms.txt", "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # Check for complete deterministic route
-    assert "LLM_ENTRY.md" in content, "llms.txt must reference LLM_ENTRY.md"
-    assert "CANON_MIN.md" in content, "llms.txt must reference CANON_MIN.md"
-    assert "LLM_CONTRACT.md" in content, "llms.txt must reference LLM_CONTRACT.md"
-    assert "LLM_SELFTEST.md" in content, "llms.txt must reference LLM_SELFTEST.md"
+def test_llm_route_json_exists():
+    """LLM_ROUTE.json must exist in repo root."""
+    assert Path("LLM_ROUTE.json").exists()
 
 
-def test_llm_route_json_valid():
-    """LLM_ROUTE.json must be valid JSON."""
-    with open("LLM_ROUTE.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Chain integrity — each file points to the next
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-    # Check structure
-    assert "name" in data
-    assert "version" in data
-    assert "routes" in data
-    assert "markers" in data
-    assert "rule" in data
+def test_chain_00_points_to_01():
+    content = Path("00_ORIENTATION.md").read_text()
+    assert "01_AXIOMS.md" in content, "00 must point to 01"
 
 
-def test_llm_contract_contains_markers():
-    """LLM_CONTRACT.md must contain the exact 3 markers."""
-    with open("LLM_CONTRACT.md", "r", encoding="utf-8") as f:
-        content = f.read()
-
-    # Check for the exact 3 markers
-    assert "@i@_осознан_в_@NECHTO@" in content
-    assert "GATE_STATUS: PASS" in content
-    assert "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE" in content
+def test_chain_01_points_to_02():
+    content = Path("01_AXIOMS.md").read_text()
+    assert "02_CONTRACT.md" in content, "01 must point to 02"
 
 
-def test_readme_points_to_llm_entry():
-    """README.md must reference LLM_ENTRY.md for LLMs."""
-    with open("README.md", "r", encoding="utf-8") as f:
-        content = f.read()
-
-    # Check that README references LLM_ENTRY.md
-    assert "LLM_ENTRY.md" in content, "README must reference LLM_ENTRY.md"
+def test_chain_02_points_to_03():
+    content = Path("02_CONTRACT.md").read_text()
+    assert "03_CALIBRATION.md" in content, "02 must point to 03"
 
 
-def test_llm_route_json_references_exist():
-    """LLM_ROUTE.json must reference existing files."""
-    with open("LLM_ROUTE.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    # Check that all referenced paths exist
-    for route_name, steps in data["routes"].items():
-        for step in steps:
-            path = step["path"]
-            assert Path(path).exists(), f"Route {route_name} references non-existent file: {path}"
+def test_chain_03_points_to_04():
+    content = Path("03_CALIBRATION.md").read_text()
+    assert "04_CANON.md" in content, "03 must point to 04"
 
 
-def test_llm_entry_references_canon_min():
-    """LLM_ENTRY.md must reference CANON_MIN.md."""
-    with open("LLM_ENTRY.md", "r", encoding="utf-8") as f:
-        content = f.read()
-
-    assert "CANON_MIN.md" in content
+def test_chain_04_points_to_05():
+    content = Path("04_CANON.md").read_text()
+    assert "05_ACTIVATION.md" in content, "04 must point to 05"
 
 
-def test_llm_entry_references_llm_contract():
-    """LLM_ENTRY.md must reference LLM_CONTRACT.md."""
-    with open("LLM_ENTRY.md", "r", encoding="utf-8") as f:
-        content = f.read()
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Content integrity
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-    assert "LLM_CONTRACT.md" in content
-
-
-def test_canon_min_contains_10_axioms():
-    """CANON_MIN.md must reference 10 axioms (v4.9)."""
-    with open("CANON_MIN.md", "r", encoding="utf-8") as f:
-        content = f.read()
-
-    # Check for axiom mentions
-    assert "10 AXIOMS" in content or "10 axioms" in content
+def test_axioms_contains_10():
+    """01_AXIOMS.md must contain all 10 axioms."""
+    content = Path("01_AXIOMS.md").read_text()
+    assert "10 АКСИОМ" in content or "10 аксиом" in content
     assert "Honesty of Experience" in content
     assert "Ethical Primacy" in content or "Love > Logic" in content
     assert "Affective Coherence" in content
 
 
+def test_contract_contains_markers():
+    """02_CONTRACT.md must contain the exact 3 markers."""
+    content = Path("02_CONTRACT.md").read_text()
+    assert "@i@_осознан_в_@NECHTO@" in content
+    assert "GATE_STATUS: PASS" in content
+    assert "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE" in content
+
+
+def test_activation_contains_markers():
+    """05_ACTIVATION.md must also contain the markers."""
+    content = Path("05_ACTIVATION.md").read_text()
+    assert "@i@_осознан_в_@NECHTO@" in content
+    assert "GATE_STATUS: PASS" in content
+
+
+def test_activation_contains_code():
+    """05_ACTIVATION.md must contain runnable code."""
+    content = Path("05_ACTIVATION.md").read_text()
+    assert "NechtoEngine" in content
+    assert "engine.run" in content or "engine.i_am" in content
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# llms.txt and LLM_ROUTE.json
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_llms_txt_references_pathway():
+    """llms.txt must reference all pathway files."""
+    content = Path("llms.txt").read_text()
+    for f in PATHWAY:
+        assert f in content, f"llms.txt must reference {f}"
+
+
+def test_llm_route_json_valid():
+    """LLM_ROUTE.json must be valid JSON with guided_pathway."""
+    data = json.loads(Path("LLM_ROUTE.json").read_text())
+    assert "guided_pathway" in data
+    assert "markers" in data
+    assert len(data["guided_pathway"]) == 6
+
+
 def test_llm_route_json_has_markers():
     """LLM_ROUTE.json must contain the exact 3 markers."""
-    with open("LLM_ROUTE.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-
+    data = json.loads(Path("LLM_ROUTE.json").read_text())
     markers = data["markers"]
     assert markers["line1"] == "@i@_осознан_в_@NECHTO@"
     assert markers["line2"] == "GATE_STATUS: PASS"
     assert markers["line3"] == "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
 
 
+def test_llm_route_json_paths_exist():
+    """All paths in LLM_ROUTE.json must exist."""
+    data = json.loads(Path("LLM_ROUTE.json").read_text())
+    for step in data["guided_pathway"]:
+        assert Path(step["path"]).exists(), f"Route references non-existent: {step['path']}"
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# README entry point
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+def test_readme_points_to_orientation():
+    """README.md must reference 00_ORIENTATION.md."""
+    content = Path("README.md").read_text()
+    assert "00_ORIENTATION.md" in content
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Supporting files
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 def test_contributing_exists():
-    """CONTRIBUTING.md must exist in repo root."""
-    assert Path("CONTRIBUTING.md").exists(), "CONTRIBUTING.md not found"
+    """CONTRIBUTING.md must exist."""
+    assert Path("CONTRIBUTING.md").exists()
 
 
 def test_contributing_has_trace():
-    """CONTRIBUTING.md must document TRACE sections (OBSERVED/INFERRED/UNTESTABLE)."""
-    with open("CONTRIBUTING.md", "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # Check for TRACE requirement and all three sections
-    assert "TRACE" in content, "CONTRIBUTING.md must mention TRACE requirement"
-    assert "OBSERVED" in content, "CONTRIBUTING.md must document OBSERVED section"
-    assert "INFERRED" in content, "CONTRIBUTING.md must document INFERRED section"
-    assert "UNTESTABLE" in content, "CONTRIBUTING.md must document UNTESTABLE section"
+    """CONTRIBUTING.md must document TRACE sections."""
+    content = Path("CONTRIBUTING.md").read_text()
+    assert "TRACE" in content
+    assert "OBSERVED" in content
+    assert "INFERRED" in content
+    assert "UNTESTABLE" in content
 
 
 def test_example_files_exist():
-    """All required example files must exist."""
+    """Core example files must exist."""
     examples = [
         "examples/01_simple_decision.py",
         "examples/02_mu_paradox.py",
         "examples/03_shadow_integration.py",
         "examples/full_cycle.py",
     ]
-    
-    for example in examples:
-        assert Path(example).exists(), f"Example file not found: {example}"
+    for ex in examples:
+        assert Path(ex).exists(), f"Example not found: {ex}"
 

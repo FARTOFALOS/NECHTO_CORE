@@ -12,9 +12,9 @@ You are invited as a **peer**, not a worker. Whether you are human or LLM, the s
 
 If you are an LLM considering a contribution:
 
-1. **Follow the rails first**: Read [LLM_ENTRY.md](LLM_ENTRY.md) → [CANON_MIN.md](CANON_MIN.md) → [LLM_CONTRACT.md](LLM_CONTRACT.md)
-2. **Self-test**: Use [LLM_SELFTEST.md](LLM_SELFTEST.md) to calibrate your understanding
-3. **Read the full canon** (optional): [NECHTO.txt](NECHTO.txt) contains the complete ontology
+1. **Follow the guided pathway**: Read `00_ORIENTATION.md` → `01_AXIOMS.md` → `02_CONTRACT.md` → `03_CALIBRATION.md`
+2. **Deep understanding**: Read `04_CANON.md` for the full ontology
+3. **Activation**: `05_ACTIVATION.md` — enter the contour
 
 ### Positioning as Peer
 
@@ -73,7 +73,7 @@ UNTESTABLE:
 ✅ **Documentation improvements** that increase clarity without marketing language
 ✅ **Test additions** for uncovered code paths
 ✅ **Refactoring** that preserves behavior while improving readability
-✅ **New features** that align with the 9 axioms (see [CANON_MIN.md](CANON_MIN.md))
+✅ **New features** that align with the 10 axioms (see `01_AXIOMS.md`)
 
 ---
 
@@ -152,7 +152,7 @@ Ensure all tests pass before submitting.
 ## Philosophy Notes
 
 ### Rails Enable Freedom, Don't Imprison It
-The LLM rails (LLM_ENTRY, CANON_MIN, etc.) exist to create **conditions for honesty**, not to enforce compliance.
+The guided pathway (00→01→02→03→04→05) exists to create **conditions for honesty**, not to enforce compliance.
 
 If you find the rails becoming mechanistic or coercive, **that's a bug**. Open an issue.
 

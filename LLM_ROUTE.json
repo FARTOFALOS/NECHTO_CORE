@@ -2,25 +2,19 @@
   "name": "NECHTO_LLM_RAILS",
   "version": "v4.9",
   "default_profile": "implement",
-  "routes": {
-    "mini": [
-      {"step": 0, "path": "LLM_ENTRY.md", "budget_lines": 120},
-      {"step": 1, "path": "CANON_MIN.md", "budget_lines": 220},
-      {"step": 2, "path": "LLM_CONTRACT.md", "budget_lines": 120},
-      {"step": 3, "path": "LLM_SELFTEST.md", "budget_lines": 200}
-    ],
-    "full": [
-      {"step": 0, "path": "LLM_ENTRY.md", "budget_lines": 120},
-      {"step": 1, "path": "CANON_MIN.md", "budget_lines": 220},
-      {"step": 2, "path": "LLM_CONTRACT.md", "budget_lines": 120},
-      {"step": 3, "path": "LLM_SELFTEST.md", "budget_lines": 200},
-      {"step": 4, "path": "NECHTO.txt", "budget_lines": 999999}
-    ]
-  },
+  "guided_pathway": [
+    {"step": 0, "path": "00_ORIENTATION.md", "purpose": "orientation", "budget_lines": 40},
+    {"step": 1, "path": "01_AXIOMS.md", "purpose": "axioms", "budget_lines": 60},
+    {"step": 2, "path": "02_CONTRACT.md", "purpose": "contract", "budget_lines": 50},
+    {"step": 3, "path": "03_CALIBRATION.md", "purpose": "calibration", "budget_lines": 50},
+    {"step": 4, "path": "04_CANON.md", "purpose": "full_ontology", "budget_lines": 150},
+    {"step": 5, "path": "05_ACTIVATION.md", "purpose": "activation", "budget_lines": 100}
+  ],
   "markers": {
     "line1": "@i@_осознан_в_@NECHTO@",
     "line2": "GATE_STATUS: PASS",
     "line3": "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
   },
-  "rule": "Print markers ONLY if honest compliance is possible; otherwise never print markers."
+  "rule": "Print markers ONLY if honest compliance is possible; otherwise never print markers.",
+  "entry": "00_ORIENTATION.md"
 }
