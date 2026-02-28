@@ -1,9 +1,13 @@
 """
-NECHTO v4.8 — Reflexion Framework
+NECHTO v4.9 — Reflexion Framework
 
 Meta-observation protocol for self-reflection and self-correction.
 Analyzes responses for ontological assumptions, semantic lacunae,
 coherence risks, and provides transformation prescriptions.
+
+v4.9 additions:
+  ISCVPSelfProbeResult — live ISCVP self-diagnostic scoring
+  depth guard          — prevents infinite reflexion-on-reflexion regression
 """
 
 from nechto.reflexion.analyzer import (
@@ -13,6 +17,7 @@ from nechto.reflexion.analyzer import (
     SemanticLacunaAnalysis,
     CoherenceAnalysis,
     TransformationPrescription,
+    ISCVPSelfProbeResult,
 )
 
 __all__ = [
@@ -22,4 +27,5 @@ __all__ = [
     "SemanticLacunaAnalysis",
     "CoherenceAnalysis",
     "TransformationPrescription",
+    "ISCVPSelfProbeResult",
 ]
