@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Adaptive Parameters (PART 3.5)
+NECHTO v4.9 — Adaptive Parameters (PART 3.5)
 
 α, β=1-α, γ, δ=1-γ, λ, β_retro with learning functions.
 """

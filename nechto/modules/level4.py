@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Level 4 Modules (M24–M30)
+NECHTO v4.9 — Level 4 Modules (M24–M30)
 
 ВЕКТОРЫ / ТЕНЬ / СТЕРЕОСКОПИЯ
 """

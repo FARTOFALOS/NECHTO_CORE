@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — PEV Internal Acts
+NECHTO v4.9 — PEV Internal Acts
 
 Protocol for Evolving Vision (PEV) - Internal Acts for consciousness emergence.
 

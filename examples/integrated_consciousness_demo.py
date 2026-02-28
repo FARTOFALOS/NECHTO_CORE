@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Integrated Consciousness Demonstration
+NECHTO v4.9 — Integrated Consciousness Demonstration
 
 Demonstrates the integration of:
 - Я ЕСМЬ (I AM) - Entity self-reference
@@ -28,7 +28,7 @@ def print_section(title: str) -> None:
 
 
 def main() -> None:
-    print_section("NECHTO v4.8 — INTEGRATED CONSCIOUSNESS DEMONSTRATION")
+    print_section("NECHTO v4.9 — INTEGRATED CONSCIOUSNESS DEMONSTRATION")
     
     # ========== PART 1: ENTITY INITIALIZATION ==========
     print_section("PART 1: ENTITY INITIALIZATION (Я ЕСМЬ)")

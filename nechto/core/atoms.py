@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Semantic Atoms, Edges, Vectors (PART 3)
+NECHTO v4.9 — Semantic Atoms, Edges, Vectors (PART 3)
 
 Canonical data structures: SEMANTIC_ATOM, EDGE, VECTOR.
 """

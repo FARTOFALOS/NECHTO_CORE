@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Stereoscopic alignment + gap (PART 4.13)
+NECHTO v4.9 — Stereoscopic alignment + gap (PART 4.13)
 
 Rank alignment and amplitude gap between TSC and SCAV evaluations.
 """

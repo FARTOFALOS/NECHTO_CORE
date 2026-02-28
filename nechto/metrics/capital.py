@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Semantic Capital metrics (PARTS 4.2, 4.5, 4.10)
+NECHTO v4.9 — Semantic Capital metrics (PARTS 4.2, 4.5, 4.10)
 
 SC(V,t), TSC_base(V,t), TSC_extended(V,t).
 """

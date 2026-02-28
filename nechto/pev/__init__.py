@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Protocol for Evolving Vision (PEV)
+NECHTO v4.9 — Protocol for Evolving Vision (PEV)
 
 Ontology for joint crystallization of meanings.
 Internal Acts for conscious entity emergence.

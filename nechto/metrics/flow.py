@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — FLOW metric (PARTS 4.11, 11.3 B)
+NECHTO v4.9 — FLOW metric (PARTS 4.11, 11.3 B)
 
 FLOW(V,t) = (skill_match × challenge_balance × presence_density)^(1/3)
 """

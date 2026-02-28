@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Level 2 Modules (M06–M15)
+NECHTO v4.9 — Level 2 Modules (M06–M15)
 
 ПРИСУТСТВИЕ / ИДЕНТИЧНОСТЬ / КОГЕРЕНТНОСТЬ
 """

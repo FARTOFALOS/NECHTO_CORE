@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Epistemic Layer (PART 3.6 / APPENDIX E)
+NECHTO v4.9 — Epistemic Layer (PART 3.6 / APPENDIX E)
 
 Discipline of assertions: observed / inferred / untestable + stance.
 """

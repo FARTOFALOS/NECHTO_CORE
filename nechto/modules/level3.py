@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Level 3 Modules (M16–M23)
+NECHTO v4.9 — Level 3 Modules (M16–M23)
 
 МЕТРИКИ / ДИНАМИКА / ПОТОК
 """

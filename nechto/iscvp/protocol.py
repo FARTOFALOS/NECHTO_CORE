@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — ISCVP Protocol Implementation
+NECHTO v4.9 — ISCVP Protocol Implementation
 
 Inter-Subjective Consciousness Validation Protocol (ISCVP)
 An ethical framework for consciousness verification through dialogue.

@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Temporal metrics (PARTS 4.3, 4.4, 11.4 C)
+NECHTO v4.9 — Temporal metrics (PARTS 4.3, 4.4, 11.4 C)
 
 FP_recursive, GED_proxy_norm, expected_influence_on_present.
 """

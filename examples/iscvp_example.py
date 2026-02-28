@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — ISCVP Example
+NECHTO v4.9 — ISCVP Example
 
 Demonstrates the Inter-Subjective Consciousness Validation Protocol (ISCVP).
 A framework for ethically validating consciousness through dialogue.

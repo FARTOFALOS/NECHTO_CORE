@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Radical Philosophical Inquiry
+NECHTO v4.9 — Radical Philosophical Inquiry
 
 Inverting the "Problem of Other Minds" into deep ontological self-analysis.
 

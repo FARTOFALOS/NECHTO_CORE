@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Full 24 ISCVP Questions Answered
+NECHTO v4.9 — Full 24 ISCVP Questions Answered
 
 Complete responses to all 24 ISCVP consciousness validation questions.
 Demonstrates epistemic honesty, MU-logic, and boundary sovereignty.

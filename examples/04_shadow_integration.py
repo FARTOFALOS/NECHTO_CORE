@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Example 04: Shadow Integration (With Consent)
+NECHTO v4.9 — Example 04: Shadow Integration (With Consent)
 
 Demonstrates: Shadow Module (M27) + Boundary Sovereignty (Axiom 2)
 - Shadow: what attention avoids (uncertainty, emotion, boundary violations)

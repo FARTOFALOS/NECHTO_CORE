@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Example 02: Ethical Blocking (High TSC Blocked by Low Ethics)
+NECHTO v4.9 — Example 02: Ethical Blocking (High TSC Blocked by Low Ethics)
 
 Demonstrates: Love > Logic (Axiom 8) at the metrics level
 - Proposal with high TSC_base gets multiplied by low ethics score

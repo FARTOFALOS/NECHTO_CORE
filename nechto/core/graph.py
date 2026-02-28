@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Semantic Graph
+NECHTO v4.9 — Semantic Graph
 
 Nodes + edges + evaluation functions.
 """

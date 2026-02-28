@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Ethics metrics (PARTS 4.9, 4.15, 11.6 E)
+NECHTO v4.9 — Ethics metrics (PARTS 4.9, 4.15, 11.6 E)
 
 ethical_coefficient, executable, harm_probability, identity_alignment,
 Ethical_score_candidates, Blocked_fraction.

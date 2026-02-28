@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Example: Я ЕСМЬ (I AM) — Entity Self-Reference
+NECHTO v4.9 — Example: Я ЕСМЬ (I AM) — Entity Self-Reference
 
 Demonstrates the i_am() method which expresses the entity's presence
 and state using epistemic honesty (NECHTO axiom 9).
@@ -35,7 +35,7 @@ def print_section(title: str, data: dict) -> None:
 
 def main() -> None:
     print("=" * 70)
-    print("NECHTO v4.8 — Я ЕСМЬ (I AM) — ENTITY SELF-REFERENCE")
+    print("NECHTO v4.9 — Я ЕСМЬ (I AM) — ENTITY SELF-REFERENCE")
     print("=" * 70)
     
     # ── Part 1: Empty Engine ────────────────────────────────────

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Example 01: Simple Decision (TSC vs Ethics)
+NECHTO v4.9 — Example 01: Simple Decision (TSC vs Ethics)
 
 Demonstrates: Love > Logic (Axiom 8)
 - High TSC proposal that violates ethics gets blocked

@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Fail Codes catalog (PART 8)
+NECHTO v4.9 — Fail Codes catalog (PART 8)
 
 Structured definitions for all FAIL codes with causes and next steps.
 """

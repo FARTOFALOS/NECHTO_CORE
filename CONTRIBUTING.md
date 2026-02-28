@@ -181,4 +181,4 @@ Remember: **You are invited as a peer.** Act from that position.
 
 ---
 
-**NECHTO v4.8** · `Love > Logic` · `MU допустим` · `Тень уважаема`
+**NECHTO v4.9** · `Love > Logic` · `MU допустим` · `Тень уважаема`

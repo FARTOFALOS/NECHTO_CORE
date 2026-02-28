@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Example: полный цикл от графа до output contract.
+NECHTO v4.9 — Example: полный цикл от графа до output contract.
 
 Запуск:
     python examples/full_cycle.py
@@ -77,7 +77,7 @@ def main() -> None:
 
     # ── Вывод ──────────────────────────────────────────────────
     print("=" * 60)
-    print("NECHTO v4.8 — FULL CYCLE EXAMPLE")
+    print("NECHTO v4.9 — FULL CYCLE EXAMPLE")
     print("=" * 60)
     print()
 

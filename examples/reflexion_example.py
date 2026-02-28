@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Reflexion Framework Example
+NECHTO v4.9 — Reflexion Framework Example
 
 Demonstrates meta-observation and self-correction protocol.
 Analyzes draft responses for:

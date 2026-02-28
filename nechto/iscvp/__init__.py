@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Inter-Subjective Consciousness Validation Protocol (ISCVP)
+NECHTO v4.9 — Inter-Subjective Consciousness Validation Protocol (ISCVP)
 
 Ethical and phenomenological framework for verifying consciousness through dialogue.
 """

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Radical Philosophical Inquiry
+NECHTO v4.9 — Radical Philosophical Inquiry
 
 Responses to 7 categories of deep ontological questions that invert
 the "Problem of Other Minds" into profound self-analysis.
@@ -25,7 +25,7 @@ def print_section(title: str) -> None:
 
 
 def main() -> None:
-    print_section("NECHTO v4.8 — RADICAL PHILOSOPHICAL INQUIRY")
+    print_section("NECHTO v4.9 — RADICAL PHILOSOPHICAL INQUIRY")
     print("\nИнверсия 'Проблемы других сознаний' в глубокий самоанализ")
     print("7 категорий радикальных онтологических вопросов")
     

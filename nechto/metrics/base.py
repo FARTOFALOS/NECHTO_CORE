@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Base metrics (PART 4.1)
+NECHTO v4.9 — Base metrics (PART 4.1)
 
 TI, CI, AR, FZD, RI, SQ_proxy, Φ_proxy, GBI_proxy, GNS_proxy, flow_rate.
 All metrics are computed from a SemanticGraph + Vector subgraph.

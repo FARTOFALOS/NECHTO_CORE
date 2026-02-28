@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — SCAV 5D metrics (PARTS 4.6–4.8, 4.12)
+NECHTO v4.9 — SCAV 5D metrics (PARTS 4.6–4.8, 4.12)
 
 direction, magnitude, consistency, resonance, shadow — raw + normalized.
 attention_entropy, shadow_magnitude, SCAV_health.

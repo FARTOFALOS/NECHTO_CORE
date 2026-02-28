@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Comprehensive test suite.
+NECHTO v4.9 — Comprehensive test suite.
 
 Tests cover: data structures, R^12 space, all metrics, ethics pipeline,
 SCAV 5D, stereoscopic alignment, FLOW, temporal recursion, QMM patterns,

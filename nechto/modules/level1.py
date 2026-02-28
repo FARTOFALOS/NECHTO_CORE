@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Level 1 Modules (M01–M05)
+NECHTO v4.9 — Level 1 Modules (M01–M05)
 
 ДОПУСК / ТИШИНА / СИГНАЛ
 """

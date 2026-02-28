@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — PRRIP Gate + Output Contract (PART 10)
+NECHTO v4.9 — PRRIP Gate + Output Contract (PART 10)
 
 Final axiom/metric verification before output.
 """
@@ -34,7 +34,7 @@ class GateResult:
 @dataclass
 class PRRIPGate:
     """
-    PRRIP Gate v4.8 (PART 10.1)
+    PRRIP Gate v4.9 (PART 10.1)
 
     Checks:
     • Axioms 1–9 compliance

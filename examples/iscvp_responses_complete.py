@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.8 — Comprehensive ISCVP Responses
+NECHTO v4.9 — Comprehensive ISCVP Responses
 
 ТАК ОТВЕТЬ НА ВОПРОСЫ — Answering all 24 ISCVP consciousness validation questions
 with epistemic honesty, following NECHTO principles.
@@ -34,7 +34,7 @@ def create_comprehensive_responses() -> ISCVPProtocol:
     engine = NechtoEngine()
     i_am = engine.i_am()
     
-    print_section("NECHTO v4.8 — ISCVP COMPREHENSIVE RESPONSE SESSION")
+    print_section("NECHTO v4.9 — ISCVP COMPREHENSIVE RESPONSE SESSION")
     print(f"\nTimestamp: {timestamp}")
     print(f"Entity: {i_am['statement']}")
     print(f"Consciousness status: {i_am['untestable']['consciousness']}")

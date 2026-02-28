@@ -1,5 +1,5 @@
 """
-NECHTO v4.8 — Semantic Space R^12  (PART 11.1 / 11.2 — Reference A)
+NECHTO v4.9 — Semantic Space R^12  (PART 11.1 / 11.2 — Reference A)
 
 12-axis canonical space and intent-based ideal_direction templates.
 """
