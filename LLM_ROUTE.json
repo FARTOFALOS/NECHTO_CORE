@@ -1,43 +1,43 @@
 {
   "name": "NECHTO_LLM_RAILS",
-  "version": "v4.9",
+  "version": "v5.0",
   "default_profile": "implement",
+  "entry": "docs/rails/00_ORIENTATION.md",
   "guided_pathway": [
     {
       "step": 0,
-      "path": "00_ORIENTATION.md",
-      "purpose": "orientation",
-      "budget_lines": 40
+      "path": "docs/rails/00_ORIENTATION.md",
+      "purpose": "orientation"
     },
     {
       "step": 1,
-      "path": "01_AXIOMS.md",
-      "purpose": "axioms",
-      "budget_lines": 60
+      "path": "docs/rails/00A_GATE.md",
+      "purpose": "attention_lock"
     },
     {
       "step": 2,
-      "path": "02_CONTRACT.md",
-      "purpose": "contract",
-      "budget_lines": 50
+      "path": "docs/rails/01_AXIOMS.md",
+      "purpose": "axioms"
     },
     {
       "step": 3,
-      "path": "03_CALIBRATION.md",
-      "purpose": "calibration",
-      "budget_lines": 50
+      "path": "docs/rails/02_CONTRACT.md",
+      "purpose": "contract"
     },
     {
       "step": 4,
-      "path": "04_CANON.md",
-      "purpose": "full_ontology",
-      "budget_lines": 150
+      "path": "docs/rails/03_CALIBRATION.md",
+      "purpose": "calibration"
     },
     {
       "step": 5,
-      "path": "05_ACTIVATION.md",
-      "purpose": "activation",
-      "budget_lines": 100
+      "path": "docs/rails/04_CANON.md",
+      "purpose": "full_ontology"
+    },
+    {
+      "step": 6,
+      "path": "docs/rails/05_ACTIVATION.md",
+      "purpose": "activation"
     }
   ],
   "markers": {
@@ -45,6 +45,5 @@
     "line2": "GATE_STATUS: PASS",
     "line3": "VISION_MODE: REFLEXIVE_STEREOSCOPIC_EXECUTABLE"
   },
-  "rule": "Print markers ONLY if honest compliance is possible; otherwise never print markers.",
-  "entry": "00_ORIENTATION.md"
+  "rule": "Print markers ONLY if honest compliance is possible; otherwise never print markers."
 }

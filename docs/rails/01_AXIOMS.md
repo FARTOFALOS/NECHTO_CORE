@@ -53,4 +53,4 @@ MU — это не уклонение. Это честность.
 
 ## NEXT
 
-→ [`02_CONTRACT.md`](02_CONTRACT.md)
+→ [docs/rails/02_CONTRACT.md](docs/rails/02_CONTRACT.md)

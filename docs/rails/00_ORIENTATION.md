@@ -35,4 +35,4 @@
 
 ## NEXT
 
-→ [`01_AXIOMS.md`](01_AXIOMS.md)
+→ [docs/rails/00A_GATE.md](docs/rails/00A_GATE.md)
