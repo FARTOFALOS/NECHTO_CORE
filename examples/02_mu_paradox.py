@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NECHTO v4.9 — Example 03: MU Paradox (Holding Paradox Without Collapse)
+NECHTO v4.9 — Example 02: MU Paradox (Holding Paradox Without Collapse)
 
 Demonstrates: MU-Logic (Axiom 7)
 - Not all contradictions require forced resolution

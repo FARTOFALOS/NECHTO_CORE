@@ -154,9 +154,8 @@ def test_example_files_exist():
     """All required example files must exist."""
     examples = [
         "examples/01_simple_decision.py",
-        "examples/02_ethical_blocking.py",
-        "examples/03_mu_paradox.py",
-        "examples/04_shadow_integration.py",
+        "examples/02_mu_paradox.py",
+        "examples/03_shadow_integration.py",
         "examples/full_cycle.py",
     ]
     
