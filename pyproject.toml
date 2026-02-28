@@ -19,9 +19,12 @@ nechto = "nechto.cli:main"
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.0",
-    "pytest-cov",
+  "pytest>=7.0",
+  "pytest-cov",
 ]
+
+[project.scripts]
+nechto = "nechto.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

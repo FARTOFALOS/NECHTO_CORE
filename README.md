@@ -189,8 +189,9 @@ print(identity["version"])          # "4.9.0"
 
 ```bash
 pip install -e ".[dev]"
-python -m pytest tests/ -v
-# 184 passed
+nechto selftest
+python examples/00_smoke.py
+python -m pytest tests/ -v # 184 passed
 ```
 
 ## Лицензия
